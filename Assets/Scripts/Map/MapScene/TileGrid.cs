@@ -1,7 +1,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Map
+namespace Map.MapScene
 {
 
     public class TileGrid : MonoBehaviour
@@ -45,7 +45,7 @@ namespace Map
         private void CreateTile(int x, int y)
         {
             var tileObj = Instantiate(tilePrefab, ConvertPositionToCoordinates(x, y), Quaternion.identity, transform);
-            tileObj.GetComponent<Tile>().CreateTile(TileSize, x, y);
+            tileObj.GetComponent<CreateTile>().AddTile(TileSize);
         }
     }
 }

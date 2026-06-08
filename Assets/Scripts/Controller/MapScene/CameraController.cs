@@ -2,7 +2,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Controller
+namespace Controller.MapScene
 {
     public class CameraController : MonoBehaviour
     {
@@ -52,8 +52,8 @@ namespace Controller
         [UsedImplicitly]
         private void OnRotateCamera(InputValue rotationValue)
         {
-            var rotation = rotationValue.Get<Vector2>();
-            _rotationVector = new Vector3(0f, rotation.x, 0f);
+            var rotation = rotationValue.Get<float>();
+            _rotationVector = new Vector3(0f, rotation, 0f);
         }
 
         private void ResetCamera()

@@ -1,20 +1,21 @@
+using Controller;
 using UnityEngine;
 
-namespace  Map
+namespace Map.MapScene
 {
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(LineRenderer))]
-    public class Tile : MonoBehaviour
+    public class CreateTile : MonoBehaviour
     {
-        
-
-        public void CreateTile(int size, int x, int y)
+        public void AddTile(int size)
         {
-            GetComponent<MeshFilter>().mesh = CreateMesh(size);
+            var mesh = CreateMesh(size);
+            GetComponent<MeshFilter>().mesh = mesh;
+            GetComponent<MeshCollider>().sharedMesh = mesh;
             CreateOutline(size);
         }
-        
+
         private static Vector3[] GetHexCorners(float size)
         {
             Vector3[] corners = new Vector3[6];
@@ -27,9 +28,10 @@ namespace  Map
                     Mathf.Sin(angle) * size
                 );
             }
+
             return corners;
         }
-        
+
         private void CreateOutline(float size)
         {
             var lineRenderer = GetComponent<LineRenderer>();
@@ -44,13 +46,12 @@ namespace  Map
 
             lineRenderer.SetPosition(6, corners[0]); // schließen
         }
-        
+
         private static Mesh CreateMesh(float size)
         {
             Mesh mesh = new Mesh();
             mesh.name = "Tile";
-            
-            
+
 
             // 6 Ecken + Mittelpunkt
             Vector3[] vertices = new Vector3[7];
