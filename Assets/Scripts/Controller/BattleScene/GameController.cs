@@ -1,19 +1,26 @@
+using System.Collections.Generic;
+using Entity;
+using Service;
 using UnityEngine;
 
 namespace Controller.BattleScene
 {
     public class GameController : MonoBehaviour
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private IEnemyService _enemyService;
+        private IUnitService _unitService;
+
+        private List<Enemy> _enemies;
+        private List<Unit> _units;
+
+        private void Start()
         {
-        
+            _enemyService = ProjectInstaller.EnemyService;
+            _unitService = ProjectInstaller.UnitService;
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-        
         }
     }
 }

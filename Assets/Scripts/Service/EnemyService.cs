@@ -6,7 +6,7 @@ namespace Service
     {
         public List<string> GetEnemies()
         {
-            return new List<string>{"bla"};
+            return new List<string>{"bla", "gulp"};
         }
     }
 }
