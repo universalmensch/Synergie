@@ -13,7 +13,6 @@ namespace Controller.MapScene
         
         public void OnClick()
         {
-            Debug.Log("Tile geclicked");
         }
     }
 }

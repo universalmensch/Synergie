@@ -1,4 +1,6 @@
+using Service;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Controller.MapScene
 {
@@ -10,9 +12,11 @@ namespace Controller.MapScene
         private Vector2 _targetPosition;
         private bool _isMoving;
         
+        private ISceneService _sceneService;
+        
         private void Start()
         {
-        
+            _sceneService = ProjectInstaller.SceneService;
         }
 
         private void Update()
@@ -30,17 +34,17 @@ namespace Controller.MapScene
                 new Vector3(_targetPosition.x,  1f,  _targetPosition.y),
                 MoveSpeed * Time.deltaTime
             );
-
-            if (Vector3.Distance(transform.position, _targetPosition) < 0.01f)
+            
+            if (Vector3.Distance(transform.position, new Vector3(_targetPosition.x,  1f,  _targetPosition.y)) < 1f)
             {
                 _isMoving = false;
+                _sceneService.LoadScene(ISceneService.SceneName.Battle);
             }
         }
 
         public void OnClick()
         {
             isSelected = !isSelected;
-            Debug.Log("Player geclicked");
         }
 
         public void MoveTo(Vector2 targetPos)
