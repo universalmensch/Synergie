@@ -24,7 +24,7 @@ namespace Controller
             hit.collider.GetComponent<IClickable>()?.OnClick();
 
             if (!hit.collider.TryGetComponent(out TileController tile)) return;
-            gameController.TileClicked(tile);
+            gameController.Clicked(tile);
         }
     }
 }
