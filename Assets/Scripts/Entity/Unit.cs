@@ -18,11 +18,11 @@ namespace Entity
             get => _position;
         }
 
-        private UnitType _unitType;
+        private SynergieType _synergieType;
 
-        public UnitType UnitType
+        public SynergieType SynergieType
         {
-            get => _unitType;
+            get => _synergieType;
         }
 
         private int _health;
@@ -46,14 +46,16 @@ namespace Entity
             get => _armor;
         }
 
-        public Unit(Vector3 position, bool isAlly, UnitType unitType, int health, int damage, int armor)
+        public Unit(Vector3 position, bool isAlly, SynergieType synergieType, int health, int damage, int armor)
         {
             _position = position;
             _isAlly = isAlly;
-            _unitType = unitType;
+            _synergieType = synergieType;
             _health = health;
             _damage = damage;
             _armor = armor;
         }
+        
+        public Unit(){}
     }
 }

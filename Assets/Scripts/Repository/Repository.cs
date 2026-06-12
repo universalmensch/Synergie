@@ -1,13 +1,27 @@
 using System.Collections.Generic;
 using Entity;
 using Service;
+using Unity.VisualScripting.Dependencies.Sqlite;
 
 namespace Repository
 {
     public class Repository : IRepository
     {
+        private SQLiteConnection _dbConnection;
+
+        private SQLiteConnection DbConnection
+        {
+            get
+            {
+                _dbConnection ??= new SQLiteConnection($"Data Source={DatabaseInitializer.DbPath}", true);
+                return _dbConnection;
+            }
+        }
+        
         public List<Unit> GetUnits()
         {
+            DbConnection.Find<Unit>("1");
+            DbConnection.Query<Unit>("select * from Unit unit where unit._isAlly == true");
             return new List<Unit>();
         }
 

@@ -1,3 +1,4 @@
+using System;
 using Repository;
 using Service;
 using UnityEngine;
@@ -6,5 +7,11 @@ public class ProjectInstaller : MonoBehaviour
 {
     private static readonly IRepository Repository = new Repository.Repository();
     public static readonly IUnitService UnitService = new UnitService(Repository);
+    public static readonly ISynergieService SynergieService = new SynergieService(Repository);
     public static readonly ISceneService SceneService = new SceneService();
+    
+    private void Awake()
+    {
+        DatabaseInitializer.Initialize();
+    }
 }

@@ -1,8 +1,9 @@
 namespace Entity
 {
-    public enum UnitType
+    public enum SynergieType
     {
         Defender,
         Attacker,
+        Mobility
     }
 }
