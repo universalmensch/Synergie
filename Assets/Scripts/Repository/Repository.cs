@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Entity;
+using SQLite;
 
 namespace Repository
 {
