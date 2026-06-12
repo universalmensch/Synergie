@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Entity;
-using Service;
-using Unity.VisualScripting.Dependencies.Sqlite;
+using SQLite;
 
 namespace Repository
 {
