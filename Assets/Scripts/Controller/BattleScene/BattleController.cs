@@ -14,7 +14,16 @@ namespace Controller.BattleScene
         private void Start()
         {
             _unitService = ProjectInstaller.UnitService;
-            _units = _unitService.GetUnits();
+            
+            _units = new List<Unit>();
+            var allies = _unitService.GetAlliedUnits();
+            var enemies = _unitService.GetEnemyUnits();
+            _units.AddRange(allies);
+            _units.AddRange(enemies);
+
+            Debug.Log(allies.Count);
+            Debug.Log(enemies.Count);
+            Debug.Log(_units.Count);
             
             CreateUnits(_units);
         }

@@ -1,61 +1,53 @@
+using SQLite;
 using UnityEngine;
 
 namespace Entity
 {
-    public class Unit
+    public class Unit : ISelection
     {
-        private bool _isAlly;
-
-        public bool IsAlly
-        {
-            get => _isAlly;
-        }
+        [PrimaryKey, AutoIncrement]
+        public int ID { get; set; }
         
-        private Vector3 _position;
+        public bool IsAlly { get; set; }
 
-        public Vector3 Position
-        {
-            get => _position;
-        }
+        public Vector3 Position => new(XCoordinate, 1, YCoordinate);
+        
+        public float XCoordinate { get; set; }
+        
+        public float YCoordinate { get; set; }
 
-        private SynergieType _synergieType;
+        public SynergieType SynergieType { get; set; }
 
-        public SynergieType SynergieType
-        {
-            get => _synergieType;
-        }
+        public int Health { get; set; }
 
-        private int _health;
+        public int Damage { get; set; }
 
-        public int Health
-        {
-            get => _health;
-        }
-
-        private int _damage;
-
-        public int Damage
-        {
-            get => _damage;
-        }
-
-        private int _armor;
-
-        public int Armor
-        {
-            get => _armor;
-        }
+        public int Armor { get; set; }
 
         public Unit(Vector3 position, bool isAlly, SynergieType synergieType, int health, int damage, int armor)
         {
-            _position = position;
-            _isAlly = isAlly;
-            _synergieType = synergieType;
-            _health = health;
-            _damage = damage;
-            _armor = armor;
+            XCoordinate = position.x;
+            YCoordinate = position.z;
+            IsAlly = isAlly;
+            SynergieType = synergieType;
+            Health = health;
+            Damage = damage;
+            Armor = armor;
         }
-        
-        public Unit(){}
+
+        public Unit()
+        {
+            // only for DB access, use parameterized constructor instead
+        }
+
+        public string GetSelectionText()
+        {
+            return "Health: " + Health + " /n Damage: " + Damage + " /n Armor: " + Armor;
+        }
+
+        public string GetSelectionHeadingText()
+        {
+            return SynergieType.ToString();
+        }
     }
 }

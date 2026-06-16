@@ -19,7 +19,10 @@ namespace Repository
             var dbConnection = new SQLiteConnection(DbPath);
 
             dbConnection.BeginTransaction();
+            dbConnection.DropTable<Unit>();
             dbConnection.DropTable<SynergieEffect>();
+            
+            dbConnection.CreateTable<Unit>();
             dbConnection.CreateTable<SynergieEffect>();
             dbConnection.Commit();
 
