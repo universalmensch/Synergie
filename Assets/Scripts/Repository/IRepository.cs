@@ -14,5 +14,9 @@ namespace Repository
          * add a new unit to the player.
          */
         public void AddUnit(Unit unit);
+        
+        public SynergieEffect GetSynergieEffect();
+        
+        public void AddSynergieEffect(SynergieEffect effect);
     }
 }

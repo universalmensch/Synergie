@@ -7,18 +7,24 @@ namespace Repository
 {
     public static class DatabaseInitializer
     {
-         public static string DbPath =>
+        public static string DbPath =>
             Path.Combine(Application.persistentDataPath, "synergie.db");
 
         public static void Initialize()
         {
-            var conn = new SQLiteConnection(DbPath, true);
+            // TODO: master table for static data
+            // TODO: 1 table for each safe game
+            // TODO: Drop table only in specific cases
             
-            conn.BeginTransaction();
-            conn.CreateTable<SynergieEffect>();
-            conn.CreateTable<Unit>();
-            conn.Commit();
-            conn.Close();
+            var dbConnection = new SQLiteConnection(DbPath);
+
+            dbConnection.BeginTransaction();
+            dbConnection.DropTable<SynergieEffect>();
+            dbConnection.CreateTable<SynergieEffect>();
+            dbConnection.Commit();
+
+            dbConnection.Close();
+            dbConnection.Dispose();
         }
     }
 }
