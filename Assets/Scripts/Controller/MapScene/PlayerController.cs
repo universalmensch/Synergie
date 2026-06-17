@@ -45,7 +45,6 @@ namespace Controller.MapScene
         public void OnClick()
         {
             isSelected = !isSelected;
-            _sceneService.LoadScene(ISceneService.SceneName.SelectionUI, LoadSceneMode.Additive);
         }
 
         public void MoveTo(Vector2 targetPos)

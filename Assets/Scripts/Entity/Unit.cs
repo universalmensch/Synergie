@@ -37,7 +37,7 @@ namespace Entity
 
         public Unit()
         {
-            // only for DB access, use parameterized constructor instead
+            // only for ORM, use parameterized constructor instead
         }
 
         public string GetSelectionText()

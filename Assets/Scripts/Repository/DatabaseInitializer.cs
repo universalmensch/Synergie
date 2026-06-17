@@ -21,9 +21,11 @@ namespace Repository
             dbConnection.BeginTransaction();
             dbConnection.DropTable<Unit>();
             dbConnection.DropTable<SynergieEffect>();
+            dbConnection.DropTable<Task>();
             
             dbConnection.CreateTable<Unit>();
             dbConnection.CreateTable<SynergieEffect>();
+            dbConnection.CreateTable<Task>();
             dbConnection.Commit();
 
             dbConnection.Close();

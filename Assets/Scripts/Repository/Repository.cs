@@ -42,9 +42,26 @@ namespace Repository
             return DbConnection.Table<Unit>().Count(unit => unit.IsAlly == true);
         }
 
+        public List<Task> GetTasks()
+        {
+            return DbConnection.Query<Task>("select * from Task");
+        }
+
         public void AddUnit(Unit unit)
         {
             DbConnection.Insert(unit);
+        }
+
+        public void AddTask(Task task)
+        {
+            DbConnection.Insert(task);
+            Debug.Log("Task added");
+        }
+
+        public void DeleteTask(int taskId)
+        {
+            DbConnection.Delete<Task>(taskId);
+            Debug.Log("Task deleted");
         }
 
         public void UpdateUnit(Unit unit)
@@ -59,15 +76,12 @@ namespace Repository
 
         public SynergieEffect GetSynergieEffect()
         {
-            var syn = DbConnection.Get<SynergieEffect>(2);
-            Debug.Log(syn.Type);
-            return syn;
+            return DbConnection.Get<SynergieEffect>(2);
         }
 
         public void AddSynergieEffect(SynergieEffect syn)
         {
             DbConnection.Insert(syn);
-            Debug.Log("Rows: " + DbConnection.Table<SynergieEffect>().Count());
         }
     }
 }

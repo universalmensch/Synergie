@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Entity;
 using Service;
 using UnityEngine;
@@ -8,7 +10,7 @@ namespace Controller.SelectionUIScene
     public class SelectionController : MonoBehaviour
     {
         private ISceneService _sceneService;
-        private IUnitService _unitService;
+        private ITaskService _taskService;
 
         [SerializeField] private ButtonController button0;
         [SerializeField] private ButtonController button1;
@@ -17,10 +19,12 @@ namespace Controller.SelectionUIScene
         [SerializeField] private ButtonController button4;
         [SerializeField] private ButtonController button5;
         
+        private List<Task> _tasks;
+        
         private void Start()
         {
             _sceneService = ProjectInstaller.SceneService;
-            _unitService = ProjectInstaller.UnitService;
+            _taskService = ProjectInstaller.TaskService;
             
             button0.GetComponent<Button>().onClick.AddListener(ButtonClick);
             button1.GetComponent<Button>().onClick.AddListener(ButtonClick);
@@ -28,8 +32,23 @@ namespace Controller.SelectionUIScene
             button3.GetComponent<Button>().onClick.AddListener(ButtonClick);
             button4.GetComponent<Button>().onClick.AddListener(ButtonClick);
             button5.GetComponent<Button>().onClick.AddListener(ButtonClick);
-            
-            StartUnitSelection();
+
+            _tasks = _taskService.GetTasks();
+            HandleTasks();
+        }
+
+        private void HandleTasks()
+        {
+            var currentTask = _tasks.First();
+            _tasks.Remove(currentTask);
+            _taskService.DeleteTask(currentTask.ID);
+
+            switch (currentTask.TaskType)
+            {
+                case TaskType.AddUnit: StartUnitSelection(); break;
+                case TaskType.AddSynergieEffect: StartSynergieSelection(); break;
+                case TaskType.AddSynergieTrigger: StartSynergieSelection(); break;
+            }
         }
 
         private void ButtonClick()
@@ -41,9 +60,9 @@ namespace Controller.SelectionUIScene
             button4.GetComponent<Button>().enabled = false;
             button5.GetComponent<Button>().enabled = false;
             
-            if (_unitService.GetAlliedUnitsCount() < 5)
+            if (_tasks.Any())
             {
-                StartUnitSelection();
+                HandleTasks();
             }
             else
             {

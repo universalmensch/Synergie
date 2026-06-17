@@ -691,6 +691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f4a1da33ca14d9bb77b5d7c47da9f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectInstaller
+  mapController: {fileID: 1569316988}
 --- !u!4 &1652452871
 Transform:
   m_ObjectHideFlags: 0
