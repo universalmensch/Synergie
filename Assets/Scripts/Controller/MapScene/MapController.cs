@@ -36,6 +36,7 @@ namespace Controller.MapScene
             if (!_tasks.Any()) return;
             
             _sceneService.LoadScene(ISceneService.SceneName.SelectionUI, LoadSceneMode.Additive);
+            _sceneService.LoadScene(ISceneService.SceneName.MapUI, LoadSceneMode.Additive);
         }
 
         public void GameStart()

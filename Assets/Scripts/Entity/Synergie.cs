@@ -1,16 +1,20 @@
 using System.Collections.Generic;
+using SQLite;
 
 namespace Entity
 {
     public class Synergie
     {
-        private List<SynergieEffect> _effects;
-        private List<SynergieTrigger> _triggers;
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+        
+        public List<SynergieEffect> Effects { get; set; }
+        public List<SynergieTrigger> Triggers { get; set; }
 
         public Synergie()
         {
-            _effects = new List<SynergieEffect>();
-            _triggers = new List<SynergieTrigger>();
+            Effects = new List<SynergieEffect>();
+            Triggers = new List<SynergieTrigger>();
         }
     }
 }

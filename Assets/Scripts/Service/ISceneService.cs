@@ -9,6 +9,8 @@ namespace Service
             Map,
             Battle,
             SelectionUI,
+            SynergieUI,
+            MapUI,
         }
         
         public void LoadScene(SceneName sceneName);
