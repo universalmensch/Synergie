@@ -5,31 +5,12 @@ namespace Entity
 {
     public class Unit : ISelection
     {
-        [PrimaryKey, AutoIncrement]
-        public int ID { get; set; }
-        
-        public bool IsAlly { get; set; }
-
-        public Vector3 Position => new(XCoordinate, 1, YCoordinate);
-        
-        public float XCoordinate { get; set; }
-        
-        public float YCoordinate { get; set; }
-
-        public SynergieType SynergieType { get; set; }
-
-        public int Health { get; set; }
-
-        public int Damage { get; set; }
-
-        public int Armor { get; set; }
-
-        public Unit(Vector3 position, bool isAlly, SynergieType synergieType, int health, int damage, int armor)
+        public Unit(Vector3 position, bool isAlly, SynergieType type, int health, int damage, int armor)
         {
             XCoordinate = position.x;
             YCoordinate = position.z;
             IsAlly = isAlly;
-            SynergieType = synergieType;
+            Type = type;
             Health = health;
             Damage = damage;
             Armor = armor;
@@ -40,6 +21,24 @@ namespace Entity
             // only for ORM, use parameterized constructor instead
         }
 
+        [PrimaryKey] [AutoIncrement] public int ID { get; set; }
+
+        public bool IsAlly { get; set; }
+
+        public Vector3 Position => new(XCoordinate, 1, YCoordinate);
+
+        public float XCoordinate { get; set; }
+
+        public float YCoordinate { get; set; }
+
+        public SynergieType Type { get; set; }
+
+        public int Health { get; set; }
+
+        public int Damage { get; set; }
+
+        public int Armor { get; set; }
+
         public string GetSelectionText()
         {
             return "Health: " + Health + " /n Damage: " + Damage + " /n Armor: " + Armor;
@@ -47,7 +46,7 @@ namespace Entity
 
         public string GetSelectionHeadingText()
         {
-            return SynergieType.ToString();
+            return Type.ToString();
         }
     }
 }

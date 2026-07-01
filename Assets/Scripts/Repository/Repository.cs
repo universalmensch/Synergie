@@ -18,18 +18,6 @@ namespace Repository
             }
         }
 
-        private void OnApplicationQuit()
-        {
-            _dbConnection?.Close();
-            _dbConnection?.Dispose();
-            _dbConnection = null;
-        }
-
-        public Unit GetUnit(int id)
-        {
-            return DbConnection.Find<Unit>(id);
-        }
-
         public List<Unit> GetAlliedUnits()
         {
             var units = DbConnection.Query<Unit>("select * from Unit unit where unit.IsAlly == true");
@@ -55,13 +43,11 @@ namespace Repository
         public void AddTask(Task task)
         {
             DbConnection.Insert(task);
-            Debug.Log("Task added");
         }
 
         public void DeleteTask(int taskId)
         {
             DbConnection.Delete<Task>(taskId);
-            Debug.Log("Task deleted");
         }
 
         public void UpdateUnit(Unit unit)
@@ -74,14 +60,77 @@ namespace Repository
             DbConnection.Delete(unit);
         }
 
-        public SynergieEffect GetSynergieEffect()
+        public void AddSynergieTrigger(SynergieTrigger synergieTrigger)
         {
-            return DbConnection.Get<SynergieEffect>(2);
+            DbConnection.Insert(synergieTrigger);
         }
 
-        public void AddSynergieEffect(SynergieEffect syn)
+        public List<SynergieEffect> GetSynergieEffects()
         {
-            DbConnection.Insert(syn);
+            var synergieEffects = DbConnection.Query<SynergieEffect>(
+                "select * from SynergieEffect");
+            return synergieEffects.FindAll(effect => !effect.IsSelected);
+        }
+
+        public List<SynergieTrigger> GetSynergieTriggers()
+        {
+            var synergieTriggers = DbConnection.Query<SynergieTrigger>(
+                "select * from SynergieTrigger");
+            return synergieTriggers.FindAll(effect => !effect.IsSelected);
+        }
+
+        public List<Synergie> GetSynergies()
+        {
+            var synergies = DbConnection.Query<Synergie>("select * from Synergie");
+
+            foreach (var synergie in synergies)
+            {
+                synergie.Effects =
+                    DbConnection.Query<SynergieEffect>("select * from SynergieEffect where SynergieId = ?",
+                        synergie.Id);
+                synergie.Triggers =
+                    DbConnection.Query<SynergieTrigger>("select * from SynergieTrigger where SynergieId = ?",
+                        synergie.Id);
+            }
+
+            return synergies;
+        }
+
+        public void UpdateSynergie(Synergie synergie)
+        {
+            DbConnection.Update(synergie);
+        }
+
+        public void AddSynergie(Synergie synergie)
+        {
+            DbConnection.Insert(synergie);
+        }
+
+        public void UpdateSynergieEffect(SynergieEffect synergieEffect)
+        {
+            DbConnection.Update(synergieEffect);
+        }
+
+        public void UpdateSynergieTrigger(SynergieTrigger synergieTrigger)
+        {
+            DbConnection.Update(synergieTrigger);
+        }
+
+        public void AddSynergieEffect(SynergieEffect synergieEffect)
+        {
+            DbConnection.Insert(synergieEffect);
+        }
+
+        private void OnApplicationQuit()
+        {
+            _dbConnection?.Close();
+            _dbConnection?.Dispose();
+            _dbConnection = null;
+        }
+
+        public Unit GetUnit(int id)
+        {
+            return DbConnection.Find<Unit>(id);
         }
     }
 }

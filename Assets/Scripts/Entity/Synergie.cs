@@ -5,16 +5,16 @@ namespace Entity
 {
     public class Synergie
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-        
-        public List<SynergieEffect> Effects { get; set; }
-        public List<SynergieTrigger> Triggers { get; set; }
-
         public Synergie()
         {
             Effects = new List<SynergieEffect>();
             Triggers = new List<SynergieTrigger>();
         }
+
+        [PrimaryKey] [AutoIncrement] public int Id { get; set; }
+
+        [Ignore] public List<SynergieEffect> Effects { get; set; }
+
+        [Ignore] public List<SynergieTrigger> Triggers { get; set; }
     }
 }
