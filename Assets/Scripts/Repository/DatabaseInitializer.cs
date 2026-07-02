@@ -23,12 +23,14 @@ namespace Repository
             dbConnection.DropTable<SynergieResource>();
             dbConnection.DropTable<SynergieTrigger>();
             dbConnection.DropTable<Synergie>();
+            dbConnection.DropTable<SynergieEffect>();
             dbConnection.DropTable<Task>();
 
             dbConnection.CreateTable<Unit>();
             dbConnection.CreateTable<SynergieResource>();
             dbConnection.CreateTable<SynergieTrigger>();
             dbConnection.CreateTable<Synergie>();
+            dbConnection.CreateTable<SynergieEffect>();
             dbConnection.CreateTable<Task>();
             dbConnection.Commit();
 
