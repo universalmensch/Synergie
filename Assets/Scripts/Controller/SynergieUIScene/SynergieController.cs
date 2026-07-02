@@ -123,7 +123,7 @@ namespace Controller.SynergieUIScene
 
             var removeButton = Instantiate(removePrefab, effectParent.transform);
             removeButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(40, -50 * (index + 2));
-            removeButton.GetComponent<ButtonUIElement>().button.onClick.AddListener(() => RemoveEffect(resource));
+            removeButton.GetComponent<ButtonUIElement>().button.onClick.AddListener(() => RemoveResource(resource));
         }
 
         private IEnumerator SelectButtonNextFrame(Button button, int selectedResource)
@@ -134,13 +134,17 @@ namespace Controller.SynergieUIScene
             ShowResourceInfo(_selectedSynergie.Resources[selectedResource], selectedResource);
         }
 
-        private void RemoveEffect(SynergieResource resource)
+        private void RemoveResource(SynergieResource resource)
         {
             _selectedSynergie.Resources.Remove(resource);
             _synergieService.UpdateSynergie(_selectedSynergie);
 
             resource.SynergieId = null;
             _synergieService.UpdateSynergieResource(resource);
+
+            _synergieResources.Add(resource);
+
+            SetEffectDropdown();
             ShowSynergie();
         }
 
