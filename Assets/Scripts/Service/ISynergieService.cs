@@ -12,10 +12,10 @@ namespace Service
         public List<Synergie> GetSynergies();
 
         /// <summary>
-        ///     Get the currently not selected synergie effects of the player.
+        ///     Get the currently not selected synergie resources of the player.
         /// </summary>
-        /// <returns> a list of the synergie effects.</returns>
-        public List<SynergieEffect> GetSynergieEffects();
+        /// <returns> a list of the synergie resources.</returns>
+        public List<SynergieResource> GetSynergieResources();
 
         /// <summary>
         ///     Get the currently not selected synergie triggers of the player.
@@ -26,14 +26,14 @@ namespace Service
         /// <summary>
         ///     Add a new synergie resource to the player.
         /// </summary>
-        /// <param name="synergieEffect"> to be added.</param>
-        public void AddSynergieEffect(SynergieEffect synergieEffect);
+        /// <param name="synergieResource"> to be added.</param>
+        public void AddSynergieResource(SynergieResource synergieResource);
 
         /// <summary>
         ///     Update a synergie resource of the player.
         /// </summary>
-        /// <param name="synergieEffect"> to be updated.</param>
-        public void UpdateSynergieEffect(SynergieEffect synergieEffect);
+        /// <param name="synergieResource"> to be updated.</param>
+        public void UpdateSynergieResource(SynergieResource synergieResource);
 
         /// <summary>
         ///     Add a new synergie trigger to the player.

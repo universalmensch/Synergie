@@ -2,9 +2,9 @@ using SQLite;
 
 namespace Entity
 {
-    public class SynergieEffect : ISelection
+    public class SynergieResource : ISelection
     {
-        public SynergieEffect(SynergieType type, int value, string description, string header)
+        public SynergieResource(SynergieType type, int value, string description, string header)
         {
             Type = type;
             Value = value;
@@ -14,7 +14,7 @@ namespace Entity
             SynergieId = null;
         }
 
-        public SynergieEffect()
+        public SynergieResource()
         {
         }
 

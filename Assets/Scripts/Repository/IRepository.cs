@@ -52,8 +52,8 @@ namespace Repository
         /// <summary>
         ///     Save a new synergie resource.
         /// </summary>
-        /// <param name="synergieEffect"> to be saved in the DB.</param>
-        public void AddSynergieEffect(SynergieEffect synergieEffect);
+        /// <param name="synergieResource"> to be saved in the DB.</param>
+        public void AddSynergieResource(SynergieResource synergieResource);
 
         /// <summary>
         ///     Save a new synergie trigger.
@@ -65,7 +65,7 @@ namespace Repository
         ///     Get the synergie resources of the player.
         /// </summary>
         /// <returns> a list of the synergie resources.</returns>
-        public List<SynergieEffect> GetSynergieEffects();
+        public List<SynergieResource> GetSynergieResources();
 
         /// <summary>
         ///     Get the Synergie triggers of the player.
@@ -94,8 +94,8 @@ namespace Repository
         /// <summary>
         ///     Update a synergie resource of the player.
         /// </summary>
-        /// <param name="synergieEffect"> to be updated.</param>
-        public void UpdateSynergieEffect(SynergieEffect synergieEffect);
+        /// <param name="synergieResource"> to be updated.</param>
+        public void UpdateSynergieResource(SynergieResource synergieResource);
 
         /// <summary>
         ///     Update a synergie trigger of the player.

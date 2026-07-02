@@ -20,13 +20,13 @@ namespace Repository
 
             dbConnection.BeginTransaction();
             dbConnection.DropTable<Unit>();
-            dbConnection.DropTable<SynergieEffect>();
+            dbConnection.DropTable<SynergieResource>();
             dbConnection.DropTable<SynergieTrigger>();
             dbConnection.DropTable<Synergie>();
             dbConnection.DropTable<Task>();
 
             dbConnection.CreateTable<Unit>();
-            dbConnection.CreateTable<SynergieEffect>();
+            dbConnection.CreateTable<SynergieResource>();
             dbConnection.CreateTable<SynergieTrigger>();
             dbConnection.CreateTable<Synergie>();
             dbConnection.CreateTable<Task>();

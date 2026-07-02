@@ -65,10 +65,10 @@ namespace Repository
             DbConnection.Insert(synergieTrigger);
         }
 
-        public List<SynergieEffect> GetSynergieEffects()
+        public List<SynergieResource> GetSynergieResources()
         {
-            var synergieEffects = DbConnection.Query<SynergieEffect>(
-                "select * from SynergieEffect");
+            var synergieEffects = DbConnection.Query<SynergieResource>(
+                "select * from SynergieResource");
             return synergieEffects.FindAll(effect => !effect.IsSelected);
         }
 
@@ -85,8 +85,8 @@ namespace Repository
 
             foreach (var synergie in synergies)
             {
-                synergie.Effects =
-                    DbConnection.Query<SynergieEffect>("select * from SynergieEffect where SynergieId = ?",
+                synergie.Resources =
+                    DbConnection.Query<SynergieResource>("select * from SynergieResource where SynergieId = ?",
                         synergie.Id);
                 synergie.Triggers =
                     DbConnection.Query<SynergieTrigger>("select * from SynergieTrigger where SynergieId = ?",
@@ -106,9 +106,9 @@ namespace Repository
             DbConnection.Insert(synergie);
         }
 
-        public void UpdateSynergieEffect(SynergieEffect synergieEffect)
+        public void UpdateSynergieResource(SynergieResource synergieResource)
         {
-            DbConnection.Update(synergieEffect);
+            DbConnection.Update(synergieResource);
         }
 
         public void UpdateSynergieTrigger(SynergieTrigger synergieTrigger)
@@ -116,9 +116,9 @@ namespace Repository
             DbConnection.Update(synergieTrigger);
         }
 
-        public void AddSynergieEffect(SynergieEffect synergieEffect)
+        public void AddSynergieResource(SynergieResource synergieResource)
         {
-            DbConnection.Insert(synergieEffect);
+            DbConnection.Insert(synergieResource);
         }
 
         private void OnApplicationQuit()

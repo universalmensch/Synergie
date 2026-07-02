@@ -32,8 +32,8 @@ namespace Controller.SelectionUIScene
                 case Unit unit:
                     _unitService.Add(unit);
                     break;
-                case SynergieEffect effect:
-                    _synergieService.AddSynergieEffect(effect);
+                case SynergieResource resource:
+                    _synergieService.AddSynergieResource(resource);
                     break;
                 case SynergieTrigger trigger:
                     _synergieService.AddSynergieTrigger(trigger);

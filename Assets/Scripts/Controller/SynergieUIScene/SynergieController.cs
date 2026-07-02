@@ -16,15 +16,15 @@ namespace Controller.SynergieUIScene
         [SerializeField] private GameObject effectParent;
         [SerializeField] private GameObject triggerParent;
 
-        [SerializeField] private TextMeshProUGUI effectHeader;
-        [SerializeField] private TextMeshProUGUI effectValue;
-        [SerializeField] private TextMeshProUGUI effectDescription;
-        [SerializeField] private TextMeshProUGUI effectLevel;
+        [SerializeField] private TextMeshProUGUI resourceHeader;
+        [SerializeField] private TextMeshProUGUI resourceValue;
+        [SerializeField] private TextMeshProUGUI resourceDescription;
+        [SerializeField] private TextMeshProUGUI resourceLevel;
         [SerializeField] private Button upgradeButton;
 
         [SerializeField] private TMP_Dropdown effectDropdown;
         private Synergie _selectedSynergie;
-        private List<SynergieEffect> _synergieEffects;
+        private List<SynergieResource> _synergieResources;
         private List<Synergie> _synergies;
 
 
@@ -33,10 +33,10 @@ namespace Controller.SynergieUIScene
         private void Start()
         {
             _synergieService = ProjectInstaller.SynergieService;
-            ShowDefaultEffectInfo();
+            ShowDefaultResourceInfo();
 
             _synergies = _synergieService.GetSynergies();
-            _synergieEffects = _synergieService.GetSynergieEffects();
+            _synergieResources = _synergieService.GetSynergieResources();
 
             SetEffectDropdown();
             ShowSynergies();
@@ -48,7 +48,7 @@ namespace Controller.SynergieUIScene
             effectDropdown.ClearOptions();
             effectDropdown.captionText.text = "add effect";
 
-            if (_synergieEffects.Count == 0)
+            if (_synergieResources.Count == 0)
             {
                 effectDropdown.interactable = false;
                 return;
@@ -57,7 +57,7 @@ namespace Controller.SynergieUIScene
             effectDropdown.interactable = true;
 
             var options = new List<TMP_Dropdown.OptionData> { new("add effect") };
-            options.AddRange(_synergieEffects.Select(effect => new TMP_Dropdown.OptionData(effect.Header)));
+            options.AddRange(_synergieResources.Select(effect => new TMP_Dropdown.OptionData(effect.Header)));
 
             effectDropdown.AddOptions(options);
             effectDropdown.SetValueWithoutNotify(0);
@@ -73,17 +73,17 @@ namespace Controller.SynergieUIScene
 
             index--;
 
-            var effect = _synergieEffects[index];
-            _selectedSynergie.Effects.Add(effect);
+            var resource = _synergieResources[index];
+            _selectedSynergie.Resources.Add(resource);
             _synergieService.UpdateSynergie(_selectedSynergie);
 
-            effect.SynergieId = _selectedSynergie.Id;
-            _synergieService.UpdateSynergieEffect(effect);
+            resource.SynergieId = _selectedSynergie.Id;
+            _synergieService.UpdateSynergieResource(resource);
 
-            _synergieEffects.RemoveAt(index);
+            _synergieResources.RemoveAt(index);
 
             SetEffectDropdown();
-            ShowSynergie(_selectedSynergie.Effects.Count - 1);
+            ShowSynergie(_selectedSynergie.Resources.Count - 1);
         }
 
         private void ShowSynergies()
@@ -92,12 +92,12 @@ namespace Controller.SynergieUIScene
             ShowSynergie();
         }
 
-        private void ShowSynergie(int selectedEffect = 0)
+        private void ShowSynergie(int selectedResource = 0)
         {
             ClearSynergie();
 
-            for (var index = 0; index < _selectedSynergie.Effects.Count; index++)
-                ShowEffect(_selectedSynergie.Effects[index], index, selectedEffect);
+            for (var index = 0; index < _selectedSynergie.Resources.Count; index++)
+                ShowEffect(_selectedSynergie.Resources[index], index, selectedResource);
 
             for (var index = 0; index < _selectedSynergie.Triggers.Count; index++)
                 ShowTrigger(_selectedSynergie.Triggers[index], index);
@@ -105,71 +105,71 @@ namespace Controller.SynergieUIScene
 
         private void ClearSynergie()
         {
-            ShowDefaultEffectInfo();
+            ShowDefaultResourceInfo();
             foreach (Transform child in effectParent.transform) Destroy(child.gameObject);
         }
 
-        private void ShowEffect(SynergieEffect effect, int index, int selectedEffect)
+        private void ShowEffect(SynergieResource resource, int index, int selectedResource)
         {
-            var effectButton = Instantiate(componentPrefab, effectParent.transform);
-            effectButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(-40, -50 * (index + 2));
-            effectButton.GetComponent<ButtonUIElement>().label.text = effect.Header;
-            effectButton.GetComponent<ButtonUIElement>().button.onClick
-                .AddListener(() => ShowEffectInfo(effect, index));
-            if (index == selectedEffect)
-                StartCoroutine(SelectButtonNextFrame(effectButton.GetComponent<ButtonUIElement>().button,
-                    selectedEffect));
+            var resourceButton = Instantiate(componentPrefab, effectParent.transform);
+            resourceButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(-40, -50 * (index + 2));
+            resourceButton.GetComponent<ButtonUIElement>().label.text = resource.Header;
+            resourceButton.GetComponent<ButtonUIElement>().button.onClick
+                .AddListener(() => ShowResourceInfo(resource, index));
+            if (index == selectedResource)
+                StartCoroutine(SelectButtonNextFrame(resourceButton.GetComponent<ButtonUIElement>().button,
+                    selectedResource));
 
 
             var removeButton = Instantiate(removePrefab, effectParent.transform);
             removeButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(40, -50 * (index + 2));
-            removeButton.GetComponent<ButtonUIElement>().button.onClick.AddListener(() => RemoveEffect(effect));
+            removeButton.GetComponent<ButtonUIElement>().button.onClick.AddListener(() => RemoveEffect(resource));
         }
 
-        private IEnumerator SelectButtonNextFrame(Button button, int selectedEffect)
+        private IEnumerator SelectButtonNextFrame(Button button, int selectedResource)
         {
             yield return null;
 
             button.Select();
-            ShowEffectInfo(_selectedSynergie.Effects[selectedEffect], selectedEffect);
+            ShowResourceInfo(_selectedSynergie.Resources[selectedResource], selectedResource);
         }
 
-        private void RemoveEffect(SynergieEffect effect)
+        private void RemoveEffect(SynergieResource resource)
         {
-            _selectedSynergie.Effects.Remove(effect);
+            _selectedSynergie.Resources.Remove(resource);
             _synergieService.UpdateSynergie(_selectedSynergie);
 
-            effect.SynergieId = null;
-            _synergieService.UpdateSynergieEffect(effect);
+            resource.SynergieId = null;
+            _synergieService.UpdateSynergieResource(resource);
             ShowSynergie();
         }
 
-        private void ShowDefaultEffectInfo()
+        private void ShowDefaultResourceInfo()
         {
-            effectHeader.text = string.Empty;
-            effectValue.text = string.Empty;
-            effectDescription.text = string.Empty;
-            effectLevel.text = string.Empty;
+            resourceHeader.text = string.Empty;
+            resourceValue.text = string.Empty;
+            resourceDescription.text = string.Empty;
+            resourceLevel.text = string.Empty;
             upgradeButton.gameObject.SetActive(false);
         }
 
-        private void UpgradeEffect(SynergieEffect effect, int selectedEffectIndex)
+        private void UpgradeResource(SynergieResource resource, int selectedResourceIndex)
         {
-            effect.Upgrade();
-            _synergieService.UpdateSynergieEffect(effect);
-            ShowSynergie(selectedEffectIndex);
+            resource.Upgrade();
+            _synergieService.UpdateSynergieResource(resource);
+            ShowSynergie(selectedResourceIndex);
         }
 
-        private void ShowEffectInfo(SynergieEffect effect, int selectedEffectIndex)
+        private void ShowResourceInfo(SynergieResource resource, int selectedResourceIndex)
         {
-            effectHeader.text = effect.Header;
-            effectValue.text = "value: " + effect.Value;
-            effectDescription.text = effect.Description;
-            effectLevel.text = "level: " + effect.Level;
+            resourceHeader.text = resource.Header;
+            resourceValue.text = "value: " + resource.Value;
+            resourceDescription.text = resource.Description;
+            resourceLevel.text = "level: " + resource.Level;
 
             upgradeButton.onClick.RemoveAllListeners();
-            upgradeButton.onClick.AddListener(() => UpgradeEffect(effect, selectedEffectIndex));
-            upgradeButton.GetComponent<ButtonUIElement>().label.text = "upgrade (" + effect.UpgradeCost + ")";
+            upgradeButton.onClick.AddListener(() => UpgradeResource(resource, selectedResourceIndex));
+            upgradeButton.GetComponent<ButtonUIElement>().label.text = "upgrade (" + resource.UpgradeCost + ")";
             upgradeButton.gameObject.SetActive(true);
         }
 

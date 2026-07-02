@@ -240,7 +240,7 @@ GameObject:
   m_Component:
   - component: {fileID: 270349310}
   m_Layer: 0
-  m_Name: SynergieBonusses
+  m_Name: SynergieEffects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 355420417}
   - component: {fileID: 355420416}
   m_Layer: 5
-  m_Name: EffectInfoValue
+  m_Name: ResourceInfoValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 357223217}
   - component: {fileID: 357223216}
   m_Layer: 5
-  m_Name: EffectInfoLevel
+  m_Name: ResourceInfoLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -639,7 +639,7 @@ GameObject:
   - component: {fileID: 390494483}
   - component: {fileID: 390494482}
   m_Layer: 5
-  m_Name: Effects
+  m_Name: Resources
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -687,9 +687,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'effects
-
-'
+  m_text: resources
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1411,7 +1409,7 @@ GameObject:
   - component: {fileID: 939486749}
   - component: {fileID: 939486748}
   m_Layer: 5
-  m_Name: SynergieBonussesHeader
+  m_Name: SynergieEffectsHeader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1456,7 +1454,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: bonusses
+  m_text: 'effects
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1546,7 +1546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 956044239}
   m_Layer: 5
-  m_Name: EffectListElements
+  m_Name: ResourceListElements
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2214,7 +2214,7 @@ GameObject:
   - component: {fileID: 1360376028}
   - component: {fileID: 1360376027}
   m_Layer: 5
-  m_Name: EffectInfoHeader
+  m_Name: ResourceInfoHeader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2574,7 +2574,7 @@ GameObject:
   - component: {fileID: 1455179407}
   - component: {fileID: 1455179406}
   m_Layer: 5
-  m_Name: EffectInfoDescription
+  m_Name: ResourceInfoDescription
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3243,7 +3243,7 @@ GameObject:
   - component: {fileID: 1765021453}
   - component: {fileID: 1765021452}
   m_Layer: 5
-  m_Name: SynergieBonussesText
+  m_Name: SynergieEffectsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3414,7 +3414,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1810090500}
   m_Layer: 0
-  m_Name: EffectInfo
+  m_Name: ResourceInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3915,10 +3915,10 @@ MonoBehaviour:
   removePrefab: {fileID: 7176837333201424785, guid: c6eb0622ba3356f4598b6a9850ed2c39, type: 3}
   effectParent: {fileID: 956044238}
   triggerParent: {fileID: 1219912058}
-  effectHeader: {fileID: 1360376027}
-  effectValue: {fileID: 355420416}
-  effectDescription: {fileID: 1455179406}
-  effectLevel: {fileID: 357223216}
+  resourceHeader: {fileID: 1360376027}
+  resourceValue: {fileID: 355420416}
+  resourceDescription: {fileID: 1455179406}
+  resourceLevel: {fileID: 357223216}
   upgradeButton: {fileID: 1447991054}
   effectDropdown: {fileID: 1819448937}
 --- !u!1 &1904691414

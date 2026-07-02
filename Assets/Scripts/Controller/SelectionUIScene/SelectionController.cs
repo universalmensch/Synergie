@@ -117,27 +117,27 @@ namespace Controller.SelectionUIScene
 
         private void StartSynergieResourceSelection()
         {
-            var resource0 = new SynergieEffect(SynergieType.Attacker, 1,
+            var resource0 = new SynergieResource(SynergieType.Attacker, 1,
                 "grants bonus attack when synergie is triggered", "Attacking orb");
             button0.SetSelection(resource0);
 
-            var resource1 = new SynergieEffect(SynergieType.Attacker, 1,
+            var resource1 = new SynergieResource(SynergieType.Attacker, 1,
                 "grants bonus attack when synergie is triggered", "Attacking orb");
             button1.SetSelection(resource1);
 
-            var resource2 = new SynergieEffect(SynergieType.Defender, 1,
+            var resource2 = new SynergieResource(SynergieType.Defender, 1,
                 "grants bonus health when synergie is triggered", "Defending orb");
             button2.SetSelection(resource2);
 
-            var resource3 = new SynergieEffect(SynergieType.Defender, 1,
+            var resource3 = new SynergieResource(SynergieType.Defender, 1,
                 "grants bonus health when synergie is triggered", "Defending orb");
             button3.SetSelection(resource3);
 
-            var resource4 = new SynergieEffect(SynergieType.Mobility, 1,
+            var resource4 = new SynergieResource(SynergieType.Mobility, 1,
                 "grants bonus mobility when synergie is triggered", "Mobility orb");
             button4.SetSelection(resource4);
 
-            var resource5 = new SynergieEffect(SynergieType.Mobility, 1,
+            var resource5 = new SynergieResource(SynergieType.Mobility, 1,
                 "grants bonus mobility when synergie is triggered", "Mobility orb");
             button5.SetSelection(resource5);
         }

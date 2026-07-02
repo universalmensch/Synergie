@@ -18,9 +18,9 @@ namespace Service
             return _repository.GetSynergies();
         }
 
-        public List<SynergieEffect> GetSynergieEffects()
+        public List<SynergieResource> GetSynergieResources()
         {
-            return _repository.GetSynergieEffects();
+            return _repository.GetSynergieResources();
         }
 
         public List<SynergieTrigger> GetSynergieTriggers()
@@ -28,14 +28,14 @@ namespace Service
             return _repository.GetSynergieTriggers();
         }
 
-        public void AddSynergieEffect(SynergieEffect synergieEffect)
+        public void AddSynergieResource(SynergieResource synergieResource)
         {
-            _repository.AddSynergieEffect(synergieEffect);
+            _repository.AddSynergieResource(synergieResource);
         }
 
-        public void UpdateSynergieEffect(SynergieEffect synergieEffect)
+        public void UpdateSynergieResource(SynergieResource synergieResource)
         {
-            _repository.UpdateSynergieEffect(synergieEffect);
+            _repository.UpdateSynergieResource(synergieResource);
         }
 
         public void AddSynergieTrigger(SynergieTrigger synergieTrigger)
