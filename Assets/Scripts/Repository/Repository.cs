@@ -121,7 +121,7 @@ namespace Repository
             DbConnection.Insert(synergieResource);
         }
 
-        private void OnApplicationQuit()
+        public void Dispose()
         {
             _dbConnection?.Close();
             _dbConnection?.Dispose();

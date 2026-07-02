@@ -102,5 +102,10 @@ namespace Repository
         /// </summary>
         /// <param name="synergieTrigger"> to be updated.</param>
         public void UpdateSynergieTrigger(SynergieTrigger synergieTrigger);
+
+        /// <summary>
+        ///     Close DB connection on application quit.
+        /// </summary>
+        public void Dispose();
     }
 }
