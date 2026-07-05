@@ -58,5 +58,14 @@ namespace Service
         /// </summary>
         /// <param name="synergie"> to create.</param>
         public void AddSynergie(Synergie synergie);
+
+        /// <summary>
+        ///     Get the active synergie effects for current units with active resources.
+        ///     Can be used both for player and AI.
+        /// </summary>
+        /// <param name="units"> as a list of the currently relevant units.</param>
+        /// <param name="resources"> as a list of the currently active resources.</param>
+        /// <returns> a list of the active synergie effects.</returns>
+        public List<SynergieEffect> GetActiveSynergieEffects(List<Unit> units, List<SynergieResource> resources);
     }
 }

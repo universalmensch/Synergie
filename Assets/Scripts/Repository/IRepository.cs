@@ -107,5 +107,11 @@ namespace Repository
         ///     Close DB connection on application quit.
         /// </summary>
         public void Dispose();
+
+        /// <summary>
+        ///     Get all possible synergie effects.
+        /// </summary>
+        /// <returns> a list of the effects.</returns>
+        public List<SynergieEffect> GetSynergieEffects();
     }
 }

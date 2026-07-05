@@ -132,5 +132,10 @@ namespace Repository
         {
             return DbConnection.Find<Unit>(id);
         }
+
+        public List<SynergieEffect> GetSynergieEffects()
+        {
+            return DbConnection.Query<SynergieEffect>("select * from SynergieEffect");
+        }
     }
 }

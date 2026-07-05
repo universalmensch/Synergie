@@ -10,10 +10,16 @@ namespace Entity
         {
         }
 
-        public SynergieEffect(Dictionary<SynergieType, int> requirements)
+        public SynergieEffect(Dictionary<SynergieType, int> requirements, Effect effect, int level)
         {
             SetRequirements(requirements);
+            Effect = effect;
+            Level = level;
         }
+
+        public Effect Effect { get; set; }
+
+        public int Level { get; set; }
 
         [PrimaryKey] [AutoIncrement] public int Id { get; set; }
 

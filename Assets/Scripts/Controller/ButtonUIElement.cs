@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Controller.SynergieUIScene
+namespace Controller
 {
     public class ButtonUIElement : MonoBehaviour
     {

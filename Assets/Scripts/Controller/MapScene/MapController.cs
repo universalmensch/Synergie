@@ -46,9 +46,11 @@ namespace Controller.MapScene
             _synergieService.AddSynergie(new Synergie());
             _taskService.AddTask(new Task(TaskType.AddUnit, 1));
             _taskService.AddTask(new Task(TaskType.AddUnit, 2));
-            _taskService.AddTask(new Task(TaskType.AddUnit, 3));
-            _taskService.AddTask(new Task(TaskType.AddSynergieTrigger, 4));
+            _taskService.AddTask(new Task(TaskType.AddSynergieTrigger, 3));
+            _taskService.AddTask(new Task(TaskType.AddSynergieEffect, 4));
             _taskService.AddTask(new Task(TaskType.AddSynergieEffect, 5));
+            _taskService.AddTask(new Task(TaskType.AddSynergieEffect, 6));
+            _taskService.AddTask(new Task(TaskType.AddSynergieEffect, 7));
         }
     }
 }

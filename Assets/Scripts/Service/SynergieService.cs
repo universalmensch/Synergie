@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Entity;
 using Repository;
 
@@ -56,6 +58,19 @@ namespace Service
         public void AddSynergie(Synergie synergie)
         {
             _repository.AddSynergie(synergie);
+        }
+
+        public List<SynergieEffect> GetActiveSynergieEffects(List<Unit> units, List<SynergieResource> resources)
+        {
+            var typeCount = Enum.GetValues(typeof(SynergieType)).Cast<SynergieType>().ToDictionary(type => type,
+                type => units.Count(unit => type == unit.Type) +
+                        resources.Count(resource => type == resource.Type));
+
+            return _repository.GetSynergieEffects().Where(effect =>
+                    effect.GetRequirements().All(requirement => typeCount[requirement.Key] >= requirement.Value))
+                .GroupBy(synergieEffect => synergieEffect.Effect)
+                .Select(group => group.OrderByDescending(synergieEffect => synergieEffect.Level).First())
+                .ToList();
         }
     }
 }
