@@ -7,6 +7,8 @@ namespace Repository
 {
     public class Repository : IRepository
     {
+        // TODO updates generell halten weil überall identisch
+
         private SQLiteConnection _dbConnection;
 
         private SQLiteConnection DbConnection
@@ -69,14 +71,14 @@ namespace Repository
         {
             var synergieEffects = DbConnection.Query<SynergieResource>(
                 "select * from SynergieResource");
-            return synergieEffects.FindAll(effect => !effect.IsSelected);
+            return synergieEffects.FindAll(resource => !resource.IsSelected);
         }
 
         public List<SynergieTrigger> GetSynergieTriggers()
         {
             var synergieTriggers = DbConnection.Query<SynergieTrigger>(
                 "select * from SynergieTrigger");
-            return synergieTriggers.FindAll(effect => !effect.IsSelected);
+            return synergieTriggers.FindAll(trigger => !trigger.IsSelected);
         }
 
         public List<Synergie> GetSynergies()
@@ -128,14 +130,14 @@ namespace Repository
             _dbConnection = null;
         }
 
-        public Unit GetUnit(int id)
-        {
-            return DbConnection.Find<Unit>(id);
-        }
-
         public List<SynergieEffect> GetSynergieEffects()
         {
             return DbConnection.Query<SynergieEffect>("select * from SynergieEffect");
+        }
+
+        public Unit GetUnit(int id)
+        {
+            return DbConnection.Find<Unit>(id);
         }
     }
 }

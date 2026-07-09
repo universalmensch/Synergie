@@ -13,6 +13,7 @@ namespace Controller.SynergieUIScene
     {
         [SerializeField] private GameObject componentPrefab;
         [SerializeField] private GameObject removePrefab;
+        [SerializeField] private GameObject listElementPrefab;
         [SerializeField] private GameObject effectPrefab;
         [SerializeField] private GameObject resourceParent;
         [SerializeField] private GameObject effectParent;
@@ -24,12 +25,18 @@ namespace Controller.SynergieUIScene
         [SerializeField] private TextMeshProUGUI resourceLevel;
         [SerializeField] private Button upgradeButton;
 
+        [SerializeField] private TextMeshProUGUI triggerHeader;
+        [SerializeField] private TextMeshProUGUI triggerDescription;
+
         [SerializeField] private TMP_Dropdown resourceDropdown;
+        [SerializeField] private TMP_Dropdown triggerDropdown;
+
         private Synergie _selectedSynergie;
         private List<SynergieResource> _synergieResources;
         private List<Synergie> _synergies;
 
         private ISynergieService _synergieService;
+        private List<SynergieTrigger> _synergieTriggers;
         private IUnitService _unitService;
 
         private void Start()
@@ -37,11 +44,14 @@ namespace Controller.SynergieUIScene
             _synergieService = ProjectInstaller.SynergieService;
             _unitService = ProjectInstaller.UnitService;
             ShowDefaultResourceInfo();
+            ShowDefaultTriggerInfo();
 
             _synergies = _synergieService.GetSynergies();
             _synergieResources = _synergieService.GetSynergieResources();
+            _synergieTriggers = _synergieService.GetSynergieTriggers();
 
             SetResourceDropdown();
+            SetTriggerDropdown();
             ShowSynergies();
             ShowSynergieEffects();
         }
@@ -69,6 +79,29 @@ namespace Controller.SynergieUIScene
             resourceDropdown.onValueChanged.AddListener(AddResource);
         }
 
+        private void SetTriggerDropdown()
+        {
+            triggerDropdown.onValueChanged.RemoveAllListeners();
+            triggerDropdown.ClearOptions();
+            triggerDropdown.captionText.text = "add trigger";
+
+            if (_synergieTriggers.Count == 0)
+            {
+                triggerDropdown.interactable = false;
+                return;
+            }
+
+            triggerDropdown.interactable = true;
+
+            var options = new List<TMP_Dropdown.OptionData> { new("add trigger") };
+            options.AddRange(_synergieTriggers.Select(trigger => new TMP_Dropdown.OptionData(trigger.Header)));
+
+            triggerDropdown.AddOptions(options);
+            triggerDropdown.SetValueWithoutNotify(0);
+
+            triggerDropdown.onValueChanged.AddListener(AddTrigger);
+        }
+
         private void AddResource(int index)
         {
             // ignore placeholder
@@ -91,13 +124,34 @@ namespace Controller.SynergieUIScene
             ShowSynergieEffects();
         }
 
+        private void AddTrigger(int index)
+        {
+            // ignore placeholder
+            if (0 == index)
+                return;
+
+            index--;
+
+            var trigger = _synergieTriggers[index];
+            _selectedSynergie.Triggers.Add(trigger);
+            _synergieService.UpdateSynergie(_selectedSynergie);
+
+            trigger.SynergieId = _selectedSynergie.Id;
+            _synergieService.UpdateSynergieTrigger(trigger);
+
+            _synergieTriggers.RemoveAt(index);
+
+            SetTriggerDropdown();
+            ShowSynergie(0, _selectedSynergie.Triggers.Count - 1);
+        }
+
         private void ShowSynergies()
         {
             _selectedSynergie = _synergies[0];
             ShowSynergie();
         }
 
-        private void ShowSynergie(int selectedResource = 0)
+        private void ShowSynergie(int selectedResource = 0, int selectedTrigger = 0)
         {
             ClearSynergie();
 
@@ -105,13 +159,15 @@ namespace Controller.SynergieUIScene
                 ShowResource(_selectedSynergie.Resources[index], index, selectedResource);
 
             for (var index = 0; index < _selectedSynergie.Triggers.Count; index++)
-                ShowTrigger(_selectedSynergie.Triggers[index], index);
+                ShowTrigger(_selectedSynergie.Triggers[index], index, selectedTrigger);
         }
 
         private void ClearSynergie()
         {
             ShowDefaultResourceInfo();
+            ShowDefaultTriggerInfo();
             foreach (Transform child in resourceParent.transform) Destroy(child.gameObject);
+            foreach (Transform child in triggerParent.transform) Destroy(child.gameObject);
         }
 
         private void ShowResource(SynergieResource resource, int index, int selectedResource)
@@ -123,7 +179,7 @@ namespace Controller.SynergieUIScene
                 .AddListener(() => ShowResourceInfo(resource, index));
             if (index == selectedResource)
                 StartCoroutine(SelectButtonNextFrame(resourceButton.GetComponent<ButtonUIElement>().button,
-                    selectedResource));
+                    selectedResource, true));
 
 
             var removeButton = Instantiate(removePrefab, resourceParent.transform);
@@ -131,12 +187,16 @@ namespace Controller.SynergieUIScene
             removeButton.GetComponent<ButtonUIElement>().button.onClick.AddListener(() => RemoveResource(resource));
         }
 
-        private IEnumerator SelectButtonNextFrame(Button button, int selectedResource)
+        private IEnumerator SelectButtonNextFrame(Button button, int selectedElement, bool resource)
         {
             yield return null;
 
             button.Select();
-            ShowResourceInfo(_selectedSynergie.Resources[selectedResource], selectedResource);
+
+            if (resource)
+                ShowResourceInfo(_selectedSynergie.Resources[selectedElement], selectedElement);
+            else
+                ShowTriggerInfo(_selectedSynergie.Triggers[selectedElement]);
         }
 
         private void RemoveResource(SynergieResource resource)
@@ -163,6 +223,12 @@ namespace Controller.SynergieUIScene
             upgradeButton.gameObject.SetActive(false);
         }
 
+        private void ShowDefaultTriggerInfo()
+        {
+            triggerHeader.text = string.Empty;
+            triggerDescription.text = string.Empty;
+        }
+
         private void UpgradeResource(SynergieResource resource, int selectedResourceIndex)
         {
             resource.Upgrade();
@@ -183,18 +249,39 @@ namespace Controller.SynergieUIScene
             upgradeButton.gameObject.SetActive(true);
         }
 
-        private void ShowTrigger(SynergieTrigger trigger, int index)
+        private void ShowTrigger(SynergieTrigger trigger, int index, int selectedTrigger)
         {
-            var effectButton = Instantiate(componentPrefab, triggerParent.transform);
-            effectButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(-40, -100 * (index + 1));
-            effectButton.GetComponent<ButtonUIElement>().label.text = trigger.Header;
+            var listElement = Instantiate(listElementPrefab, triggerParent.transform);
+            listElement.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -50 * (index + 2));
 
-            var removeButton = Instantiate(removePrefab, triggerParent.transform);
-            removeButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(40, -100 * (index + 1));
+            var triggerButton = listElement.GetComponentsInChildren<ButtonUIElement>()[0];
+            triggerButton.label.text = trigger.Header;
+            triggerButton.button.onClick.AddListener(() => ShowTriggerInfo(trigger));
+            if (index == selectedTrigger)
+                StartCoroutine(SelectButtonNextFrame(triggerButton.button, selectedTrigger, false));
+
+            var removeButton = listElement.GetComponentsInChildren<ButtonUIElement>()[1];
+            removeButton.button.onClick.AddListener(() => RemoveTrigger(trigger));
+        }
+
+        private void RemoveTrigger(SynergieTrigger trigger)
+        {
+            _selectedSynergie.Triggers.Remove(trigger);
+            _synergieService.UpdateSynergie(_selectedSynergie);
+
+            trigger.SynergieId = null;
+            _synergieService.UpdateSynergieTrigger(trigger);
+
+            _synergieTriggers.Add(trigger);
+
+            SetTriggerDropdown();
+            ShowSynergie();
         }
 
         private void ShowTriggerInfo(SynergieTrigger trigger)
         {
+            triggerHeader.text = trigger.Header;
+            triggerDescription.text = trigger.Description;
         }
 
         private void ShowSynergieEffects()
