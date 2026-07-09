@@ -1,8 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Entity;
 using Service;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Controller.SelectionUIScene
@@ -50,6 +52,32 @@ namespace Controller.SelectionUIScene
             }
         }
 
+        private void HideAfterSelection()
+        {
+            button0.gameObject.SetActive(false);
+            button1.gameObject.SetActive(false);
+            button2.gameObject.SetActive(false);
+            button3.gameObject.SetActive(false);
+            button4.gameObject.SetActive(false);
+            button5.gameObject.SetActive(false);
+
+            EventSystem.current.SetSelectedGameObject(null);
+
+            StartCoroutine(ShowAfterSelection());
+        }
+
+        private IEnumerator ShowAfterSelection()
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            button0.gameObject.SetActive(true);
+            button1.gameObject.SetActive(true);
+            button2.gameObject.SetActive(true);
+            button3.gameObject.SetActive(true);
+            button4.gameObject.SetActive(true);
+            button5.gameObject.SetActive(true);
+        }
+
         private void ButtonClick()
         {
             button0.GetComponent<Button>().enabled = false;
@@ -58,6 +86,8 @@ namespace Controller.SelectionUIScene
             button3.GetComponent<Button>().enabled = false;
             button4.GetComponent<Button>().enabled = false;
             button5.GetComponent<Button>().enabled = false;
+
+            HideAfterSelection();
 
             if (_tasks.Any())
                 HandleTasks();

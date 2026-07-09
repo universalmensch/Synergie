@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Entity;
 using SQLite;
-using UnityEngine;
 
 namespace Repository
 {
@@ -23,7 +22,6 @@ namespace Repository
         public List<Unit> GetAlliedUnits()
         {
             var units = DbConnection.Query<Unit>("select * from Unit unit where unit.IsAlly == true");
-            Debug.Log(units.Count);
             return units;
         }
 

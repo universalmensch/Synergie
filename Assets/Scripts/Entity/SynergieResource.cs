@@ -4,9 +4,9 @@ namespace Entity
 {
     public class SynergieResource : ISelection
     {
-        public SynergieResource(SynergieType type, int value, string description, string header)
+        public SynergieResource(SynergieType synergieType, int value, string description, string header)
         {
-            Type = type;
+            SynergieType = synergieType;
             Value = value;
             Description = description;
             Header = header;
@@ -20,7 +20,7 @@ namespace Entity
 
         [PrimaryKey] [AutoIncrement] public int Id { get; set; }
 
-        public SynergieType Type { get; set; }
+        public SynergieType SynergieType { get; set; }
 
         public int? SynergieId { get; set; }
 
@@ -38,7 +38,7 @@ namespace Entity
 
         public string GetSelectionText()
         {
-            return "type: " + Type + "\n" + Description;
+            return "type: " + SynergieType + "\n" + Description;
         }
 
         public string GetSelectionHeadingText()

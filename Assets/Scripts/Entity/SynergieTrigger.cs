@@ -6,9 +6,9 @@ namespace Entity
     {
         // TODO Condition
 
-        public SynergieTrigger(SynergieType type, string description, string header)
+        public SynergieTrigger(SynergieType synergieType, string description, string header)
         {
-            Type = type;
+            SynergieType = synergieType;
             Description = description;
             Header = header;
             SynergieId = null;
@@ -22,7 +22,7 @@ namespace Entity
 
         public int? SynergieId { get; set; }
 
-        public SynergieType Type { get; set; }
+        public SynergieType SynergieType { get; set; }
 
         public string Description { get; set; }
 
@@ -32,7 +32,7 @@ namespace Entity
 
         public string GetSelectionText()
         {
-            return "type: " + Type + "\n" + Description;
+            return "type: " + SynergieType + "\n" + Description;
         }
 
         public string GetSelectionHeadingText()

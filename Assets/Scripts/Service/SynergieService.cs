@@ -64,7 +64,7 @@ namespace Service
         {
             var typeCount = Enum.GetValues(typeof(SynergieType)).Cast<SynergieType>().ToDictionary(type => type,
                 type => units.Count(unit => type == unit.Type) +
-                        resources.Count(resource => type == resource.Type));
+                        resources.Count(resource => type == resource.SynergieType));
 
             return _repository.GetSynergieEffects().Where(effect =>
                     effect.GetRequirements().All(requirement => typeCount[requirement.Key] >= requirement.Value))

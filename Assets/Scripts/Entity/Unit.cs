@@ -41,7 +41,7 @@ namespace Entity
 
         public string GetSelectionText()
         {
-            return "Health: " + Health + " /n Damage: " + Damage + " /n Armor: " + Armor;
+            return "Health: " + Health + " \n Damage: " + Damage + " \n Armor: " + Armor;
         }
 
         public string GetSelectionHeadingText()
