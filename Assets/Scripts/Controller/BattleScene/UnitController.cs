@@ -7,11 +7,35 @@ namespace Controller.BattleScene
     {
         [SerializeField] private Material allyMaterial;
         [SerializeField] private Material enemyMaterial;
-        
-        private Unit _unit;
-        private int _currentHealth;
-        private int _currentDamage;
+        [SerializeField] private Material selectedMaterial;
+
+        public bool isSelected;
+        public int currentMobility;
         private int _currentAmor;
+        private int _currentDamage;
+        private int _currentHealth;
+
+        private Unit _unit;
+
+        public bool IsAlly => _unit.IsAlly;
+        public SynergieType SynergieType => _unit.SynergieType;
+
+        private void Update()
+        {
+            if (_currentHealth <= 0)
+            {
+                Destroy(gameObject);
+                if (_unit.IsAlly)
+                {
+                }
+            }
+
+            if (isSelected) GetComponent<Renderer>().material = selectedMaterial;
+        }
+
+        public void OnClick()
+        {
+        }
 
         public void InitUnit(Unit unit)
         {
@@ -19,21 +43,57 @@ namespace Controller.BattleScene
             _currentHealth = unit.Health;
             _currentDamage = unit.Damage;
             _currentAmor = unit.Armor;
+            currentMobility = unit.Mobility;
 
             GetComponent<Renderer>().material = unit.IsAlly ? allyMaterial : enemyMaterial;
         }
 
-        private void Update()
+        public void GainMobility()
         {
-            if (_currentHealth <= 0)
+            currentMobility += Random.Range(0, 2) + _unit.SynergieType switch
             {
-                Destroy(gameObject);
-            }
+                SynergieType.Attacker => 2,
+                SynergieType.Mobility => 3,
+                _ => 1
+            };
         }
-        
-        public void OnClick()
+
+        public void LoseMobility()
         {
-            Debug.Log("unit clicked");
+            currentMobility -= 15 + Random.Range(0, 5);
+        }
+
+        public string GetIdentifier()
+        {
+            return _unit.Name + " " + _unit.ID;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            if (damage - _currentAmor < 0)
+                return;
+
+            _currentHealth -= damage - _currentAmor;
+        }
+
+        public int GetDamage()
+        {
+            return _currentDamage;
+        }
+
+        public void BuffHealth(int health)
+        {
+            _currentHealth += health;
+        }
+
+        public void BuffMobility(int mobility)
+        {
+            currentMobility += mobility;
+        }
+
+        public void BuffDamage(int damage)
+        {
+            _currentDamage += damage;
         }
     }
 }

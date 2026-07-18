@@ -97,22 +97,22 @@ namespace Controller.SelectionUIScene
 
         private void StartUnitSelection()
         {
-            var ally0 = new Unit(new Vector3(-4, 1, -4), true, SynergieType.Attacker, 10, 5, 5);
+            var ally0 = new Unit(new Vector3(-4, 1, -4), true, SynergieType.Attacker, 30, 8, 5, 8, "Friedrich");
             button0.SetSelection(ally0);
 
-            var ally1 = new Unit(new Vector3(-2, 1, -3), true, SynergieType.Defender, 20, 3, 10);
+            var ally1 = new Unit(new Vector3(-2, 1, -3), true, SynergieType.Defender, 50, 3, 10, 5, "Bert");
             button1.SetSelection(ally1);
 
-            var ally2 = new Unit(new Vector3(3, 1, -2), true, SynergieType.Defender, 30, 3, 10);
+            var ally2 = new Unit(new Vector3(3, 1, -2), true, SynergieType.Mobility, 30, 3, 10, 10, "Bart");
             button2.SetSelection(ally2);
 
-            var ally3 = new Unit(new Vector3(0, 1, -3), true, SynergieType.Attacker, 40, 5, 5);
+            var ally3 = new Unit(new Vector3(0, 1, -3), true, SynergieType.Defender, 60, 5, 5, 5, "Karl");
             button3.SetSelection(ally3);
 
-            var ally4 = new Unit(new Vector3(-4, 1, -4), true, SynergieType.Attacker, 50, 5, 5);
+            var ally4 = new Unit(new Vector3(-4, 1, -4), true, SynergieType.Attacker, 40, 8, 5, 8, "Leon");
             button4.SetSelection(ally4);
 
-            var ally5 = new Unit(new Vector3(0, 1, -3), true, SynergieType.Attacker, 60, 5, 5);
+            var ally5 = new Unit(new Vector3(0, 1, -3), true, SynergieType.Mobility, 30, 5, 5, 10, "Lukas");
             button5.SetSelection(ally5);
         }
 

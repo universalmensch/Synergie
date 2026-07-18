@@ -63,7 +63,7 @@ namespace Service
         public List<SynergieEffect> GetActiveSynergieEffects(List<Unit> units, List<SynergieResource> resources)
         {
             var typeCount = Enum.GetValues(typeof(SynergieType)).Cast<SynergieType>().ToDictionary(type => type,
-                type => units.Count(unit => type == unit.Type) +
+                type => units.Count(unit => type == unit.SynergieType) +
                         resources.Count(resource => type == resource.SynergieType));
 
             return _repository.GetSynergieEffects().Where(effect =>

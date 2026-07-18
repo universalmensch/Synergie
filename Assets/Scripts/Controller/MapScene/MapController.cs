@@ -44,13 +44,12 @@ namespace Controller.MapScene
             _taskService = ProjectInstaller.TaskService;
 
             _synergieService.AddSynergie(new Synergie());
-            _taskService.AddTask(new Task(TaskType.AddUnit, 1));
-            _taskService.AddTask(new Task(TaskType.AddUnit, 2));
-            _taskService.AddTask(new Task(TaskType.AddSynergieTrigger, 3));
-            _taskService.AddTask(new Task(TaskType.AddSynergieEffect, 4));
-            _taskService.AddTask(new Task(TaskType.AddSynergieEffect, 5));
-            _taskService.AddTask(new Task(TaskType.AddSynergieEffect, 6));
-            _taskService.AddTask(new Task(TaskType.AddSynergieEffect, 7));
+            _taskService.AddTask(new Task(TaskType.AddUnit));
+            _taskService.AddTask(new Task(TaskType.AddUnit));
+            _taskService.AddTask(new Task(TaskType.AddUnit));
+            _taskService.AddTask(new Task(TaskType.AddSynergieTrigger));
+            _taskService.AddTask(new Task(TaskType.AddSynergieEffect));
+            _taskService.AddTask(new Task(TaskType.AddSynergieEffect));
         }
     }
 }

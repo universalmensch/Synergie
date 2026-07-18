@@ -5,15 +5,18 @@ namespace Entity
 {
     public class Unit : ISelection
     {
-        public Unit(Vector3 position, bool isAlly, SynergieType type, int health, int damage, int armor)
+        public Unit(Vector3 position, bool isAlly, SynergieType synergieType, int health, int damage, int armor,
+            int mobility, string name)
         {
             XCoordinate = position.x;
             YCoordinate = position.z;
             IsAlly = isAlly;
-            Type = type;
+            SynergieType = synergieType;
             Health = health;
             Damage = damage;
             Armor = armor;
+            Mobility = mobility;
+            Name = name;
         }
 
         public Unit()
@@ -31,7 +34,7 @@ namespace Entity
 
         public float YCoordinate { get; set; }
 
-        public SynergieType Type { get; set; }
+        public SynergieType SynergieType { get; set; }
 
         public int Health { get; set; }
 
@@ -39,14 +42,18 @@ namespace Entity
 
         public int Armor { get; set; }
 
+        public int Mobility { get; set; }
+
+        public string Name { get; set; }
+
         public string GetSelectionText()
         {
-            return "Health: " + Health + " \n Damage: " + Damage + " \n Armor: " + Armor;
+            return "Health: " + Health + " \n Damage: " + Damage + " \n Armor: " + Armor + " \n Mobility: " + Mobility;
         }
 
         public string GetSelectionHeadingText()
         {
-            return Type.ToString();
+            return SynergieType.ToString();
         }
     }
 }

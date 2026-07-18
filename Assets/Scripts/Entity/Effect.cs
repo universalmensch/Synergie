@@ -20,7 +20,7 @@ namespace Entity
         Runner,
 
         /// <summary>
-        ///     Triggers on attack and defense types, reduces incoming attack also bei own attack values.
+        ///     Triggers on attack and defense types, reduces incoming attack also with own attack values.
         /// </summary>
         StrongDefender,
 
