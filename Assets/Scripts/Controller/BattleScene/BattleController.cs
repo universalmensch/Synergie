@@ -99,14 +99,16 @@ namespace Controller.BattleScene
 
             var sortedByMobility = _units
                 .OrderByDescending(unitController => unitController.currentMobility)
-                .ThenByDescending(unitController => unitController.GetIdentifier()).ToList();
+                .ThenBy(unitController => unitController.GetIdentifier()).ToList();
 
             ShowNextUnitTurns(sortedByMobility);
 
             var firstUnit = sortedByMobility.First();
+            firstUnit.LoseMobility();
+
             if (!firstUnit.IsAlly)
             {
-                firstUnit.LoseMobility();
+                Debug.Log("enemy" + firstUnit.currentMobility);
 
                 var ally = _allyControllers[Random.Range(0, _allyControllers.Count)];
 
@@ -125,26 +127,17 @@ namespace Controller.BattleScene
             else
             {
                 _selectedUnit = firstUnit;
-                firstUnit.LoseMobility();
+                Debug.Log("ally " + _selectedUnit.currentMobility);
             }
         }
 
         private void ShowNextUnitTurns(List<UnitController> units)
         {
-            firstUnitText.text = units.First().GetIdentifier();
-            units.Remove(units.First());
-
-            secondUnitText.text = units.First().GetIdentifier();
-            units.Remove(units.First());
-
-            thirdUnitText.text = units.First().GetIdentifier();
-            units.Remove(units.First());
-
-            forthUnitText.text = units.First().GetIdentifier();
-            units.Remove(units.First());
-
-            fifthUnitText.text = units.First().GetIdentifier();
-            units.Remove(units.First());
+            firstUnitText.text = units[0].GetIdentifier();
+            secondUnitText.text = units[1].GetIdentifier();
+            thirdUnitText.text = units[2].GetIdentifier();
+            forthUnitText.text = units[3].GetIdentifier();
+            fifthUnitText.text = units[4].GetIdentifier();
         }
 
         private static void TriggerSynergie(Synergie synergie, UnitController ally)
