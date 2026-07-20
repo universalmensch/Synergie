@@ -117,5 +117,17 @@ namespace Repository
         /// </summary>
         /// <returns> a list of the effects.</returns>
         public List<SynergieEffect> GetSynergieEffects();
+
+        /// <summary>
+        ///     Update a object in the DB.
+        /// </summary>
+        /// <param name="obj"> to update.</param>
+        public void Update(object obj);
+
+        /// <summary>
+        ///     Get the current resources of the player.
+        /// </summary>
+        /// <returns> the resources.</returns>
+        public Resources GetResources();
     }
 }

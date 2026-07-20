@@ -67,5 +67,16 @@ namespace Service
         /// <param name="resources"> as a list of the currently active resources.</param>
         /// <returns> a list of the active synergie effects.</returns>
         public List<SynergieEffect> GetActiveSynergieEffects(List<Unit> units, List<SynergieResource> resources);
+
+        /// <summary>
+        ///     Update the players resources.
+        /// </summary>
+        public void UpdateResources(Resources resources);
+
+        /// <summary>
+        ///     Get the current resources of the player.
+        /// </summary>
+        /// <returns> the resources.</returns>
+        public Resources GetResources();
     }
 }

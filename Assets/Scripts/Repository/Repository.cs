@@ -133,6 +133,16 @@ namespace Repository
             return DbConnection.Query<SynergieEffect>("select * from SynergieEffect");
         }
 
+        public void Update(object obj)
+        {
+            DbConnection.Update(obj);
+        }
+
+        public Resources GetResources()
+        {
+            return DbConnection.Get<Resources>(1);
+        }
+
         public Unit GetUnit(int id)
         {
             return DbConnection.Find<Unit>(id);

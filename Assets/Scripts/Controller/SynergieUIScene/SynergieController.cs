@@ -6,6 +6,7 @@ using Service;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Resources = Entity.Resources;
 
 namespace Controller.SynergieUIScene
 {
@@ -31,6 +32,9 @@ namespace Controller.SynergieUIScene
         [SerializeField] private TMP_Dropdown resourceDropdown;
         [SerializeField] private TMP_Dropdown triggerDropdown;
 
+        [SerializeField] private TextMeshProUGUI synergiePoints;
+        private Resources _resources;
+
         private Synergie _selectedSynergie;
         private List<SynergieResource> _synergieResources;
         private List<Synergie> _synergies;
@@ -54,6 +58,9 @@ namespace Controller.SynergieUIScene
             SetTriggerDropdown();
             ShowSynergies();
             ShowSynergieEffects();
+
+            _resources = _synergieService.GetResources();
+            synergiePoints.text = "Synergie points: " + _resources.SynergiePoints;
         }
 
         private void SetResourceDropdown()

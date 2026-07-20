@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+using Resources = Entity.Resources;
 
 namespace Controller.BattleScene
 {
@@ -26,6 +27,7 @@ namespace Controller.BattleScene
         private List<UnitController> _allyControllers;
         private List<Unit> _enemies;
         private List<UnitController> _enemyControllers;
+        private Resources _resources;
         private ISceneService _sceneService;
         private UnitController _selectedUnit;
         private List<Synergie> _synergies;
@@ -41,6 +43,7 @@ namespace Controller.BattleScene
             _sceneService = ProjectInstaller.SceneService;
             _taskService = ProjectInstaller.TaskService;
 
+            _resources = _synergieService.GetResources();
             _synergies = _synergieService.GetSynergies();
 
             _allies = _unitService.GetAlliedUnits();
@@ -252,7 +255,7 @@ namespace Controller.BattleScene
             fifthUnitText.text = units.Count > 4 ? units[4].GetIdentifier() : "";
         }
 
-        private static void TriggerSynergie(Synergie synergie, UnitController ally)
+        private void TriggerSynergie(Synergie synergie, UnitController ally)
         {
             foreach (var synergieResource in synergie.Resources)
                 switch (synergieResource.SynergieType)
@@ -271,6 +274,8 @@ namespace Controller.BattleScene
                 }
 
             ally.UpdateUI();
+            _resources.SynergiePoints += 5;
+            _synergieService.UpdateResources(_resources);
         }
     }
 }

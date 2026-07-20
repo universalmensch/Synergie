@@ -71,5 +71,15 @@ namespace Service
                 .Select(group => group.OrderByDescending(synergieEffect => synergieEffect.Level).First())
                 .ToList();
         }
+
+        public void UpdateResources(Resources resources)
+        {
+            _repository.Update(resources);
+        }
+
+        public Resources GetResources()
+        {
+            return _repository.GetResources();
+        }
     }
 }

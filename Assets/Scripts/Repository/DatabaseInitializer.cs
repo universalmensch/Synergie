@@ -3,6 +3,7 @@ using System.IO;
 using Entity;
 using SQLite;
 using UnityEngine;
+using Resources = Entity.Resources;
 
 namespace Repository
 {
@@ -25,6 +26,7 @@ namespace Repository
             connection.DropTable<SynergieTrigger>();
             connection.DropTable<Synergie>();
             connection.DropTable<SynergieEffect>();
+            connection.DropTable<Resources>();
             connection.DropTable<Task>();
 
             connection.CreateTable<Unit>();
@@ -33,9 +35,12 @@ namespace Repository
             connection.CreateTable<Synergie>();
             connection.CreateTable<SynergieEffect>();
             connection.CreateTable<Task>();
+            connection.CreateTable<Resources>();
             connection.Commit();
 
             AddSynergieEffects(connection);
+
+            connection.Insert(new Resources());
 
             connection.Close();
             connection.Dispose();
