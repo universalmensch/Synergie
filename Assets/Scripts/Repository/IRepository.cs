@@ -47,6 +47,10 @@ namespace Repository
 
         public void UpdateUnit(Unit unit);
 
+        /// <summary>
+        ///     Removes a unit from the DB. Used for when a unit of the player dies.
+        /// </summary>
+        /// <param name="unit"> to delete.</param>
         public void DeleteUnit(Unit unit);
 
         /// <summary>

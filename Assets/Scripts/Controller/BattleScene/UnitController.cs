@@ -1,4 +1,5 @@
 using Entity;
+using Service;
 using UnityEngine;
 
 namespace Controller.BattleScene
@@ -9,28 +10,34 @@ namespace Controller.BattleScene
         [SerializeField] private Material enemyMaterial;
         [SerializeField] private Material selectedMaterial;
 
-        public bool isSelected;
-        public int currentMobility;
         private int _currentAmor;
         private int _currentDamage;
         private int _currentHealth;
 
+        private bool _isSelected;
         private Unit _unit;
 
+        private IUnitService _unitService;
+
         public bool IsAlly => _unit.IsAlly;
+        public int Mobility { get; private set; }
+
         public SynergieType SynergieType => _unit.SynergieType;
+
+        private void Start()
+        {
+            _unitService = ProjectInstaller.UnitService;
+        }
 
         private void Update()
         {
             if (_currentHealth <= 0)
             {
+                if (_unit.IsAlly) _unitService.Remove(_unit);
                 Destroy(gameObject);
-                if (_unit.IsAlly)
-                {
-                }
             }
 
-            if (isSelected) GetComponent<Renderer>().material = selectedMaterial;
+            if (_isSelected) GetComponent<Renderer>().material = selectedMaterial;
         }
 
         public void OnClick()
@@ -43,14 +50,14 @@ namespace Controller.BattleScene
             _currentHealth = unit.Health;
             _currentDamage = unit.Damage;
             _currentAmor = unit.Armor;
-            currentMobility = unit.Mobility;
+            Mobility = unit.Mobility;
 
             GetComponent<Renderer>().material = unit.IsAlly ? allyMaterial : enemyMaterial;
         }
 
         public void GainMobility()
         {
-            currentMobility += Random.Range(0, 2) + _unit.SynergieType switch
+            Mobility += Random.Range(0, 2) + _unit.SynergieType switch
             {
                 SynergieType.Attacker => 2,
                 SynergieType.Mobility => 3,
@@ -60,7 +67,7 @@ namespace Controller.BattleScene
 
         public void LoseMobility()
         {
-            currentMobility -= 15 + Random.Range(0, 5);
+            Mobility -= 15 + Random.Range(0, 5);
         }
 
         public string GetIdentifier()
@@ -88,12 +95,22 @@ namespace Controller.BattleScene
 
         public void BuffMobility(int mobility)
         {
-            currentMobility += mobility;
+            Mobility += mobility;
         }
 
         public void BuffDamage(int damage)
         {
             _currentDamage += damage;
+        }
+
+        public void SelectUnit()
+        {
+            _isSelected = true;
+        }
+
+        public void DeselectUnit()
+        {
+            _isSelected = false;
         }
     }
 }

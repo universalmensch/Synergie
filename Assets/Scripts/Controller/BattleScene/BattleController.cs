@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -6,6 +7,7 @@ using Service;
 using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace Controller.BattleScene
 {
@@ -46,10 +48,6 @@ namespace Controller.BattleScene
             HandleNextTurn();
         }
 
-        private void Update()
-        {
-        }
-
         private void CreateUnits(List<Unit> units)
         {
             _units = new List<UnitController>();
@@ -87,7 +85,7 @@ namespace Controller.BattleScene
                              null))
                     TriggerSynergie(synergy, _selectedUnit);
 
-                ((UnitController)obj).TakeDamage(_selectedUnit.GetDamage());
+                Fight(_selectedUnit, (UnitController)obj, false, GetSynergieEffects());
             }
 
             HandleNextTurn();
@@ -98,7 +96,7 @@ namespace Controller.BattleScene
             foreach (var unitController in _units) unitController.GainMobility();
 
             var sortedByMobility = _units
-                .OrderByDescending(unitController => unitController.currentMobility)
+                .OrderByDescending(unitController => unitController.Mobility)
                 .ThenBy(unitController => unitController.GetIdentifier()).ToList();
 
             ShowNextUnitTurns(sortedByMobility);
@@ -108,26 +106,91 @@ namespace Controller.BattleScene
 
             if (!firstUnit.IsAlly)
             {
-                Debug.Log("enemy" + firstUnit.currentMobility);
-
                 var ally = _allyControllers[Random.Range(0, _allyControllers.Count)];
 
-                var effects = new List<SynergieEffect>();
+
                 foreach (var synergie in _synergies.Where(synergy =>
                              synergy.Triggers.Find(trigger => trigger.SynergieType == SynergieType.Defender) !=
                              null))
-                {
                     TriggerSynergie(synergie, ally);
-                    effects.AddRange(_synergieService.GetActiveSynergieEffects(_allies, synergie.Resources));
-                }
 
-                ally.TakeDamage(firstUnit.GetDamage());
-                HandleNextTurn();
+                Fight(ally, firstUnit, false, GetSynergieEffects());
+                StartCoroutine(WaitForNextTurn());
             }
             else
             {
                 _selectedUnit = firstUnit;
-                Debug.Log("ally " + _selectedUnit.currentMobility);
+                firstUnit.SelectUnit();
+            }
+        }
+
+        private List<SynergieEffect> GetSynergieEffects()
+        {
+            var effects = new List<SynergieEffect>();
+            foreach (var synergy in _synergies)
+                effects.AddRange(_synergieService.GetActiveSynergieEffects(_allies, synergy.Resources));
+            return effects;
+        }
+
+        private IEnumerator WaitForNextTurn()
+        {
+            yield return new WaitForSeconds(0.5f);
+            HandleNextTurn();
+        }
+
+        private static void Fight(UnitController ally, UnitController enemy, bool allyIsAttacker,
+            List<SynergieEffect> effects)
+        {
+            if (allyIsAttacker)
+            {
+                var damage = ally.GetDamage();
+
+                if (effects.Find(effect => Effect.Attacker == effect.Effect && 1 == effect.Level) != null)
+                    damage = Mathf.CeilToInt(damage * 1.2f);
+
+                if (effects.Find(effect => Effect.Attacker == effect.Effect && 2 == effect.Level) != null)
+                    damage = Mathf.CeilToInt(damage * 1.5f);
+
+                enemy.TakeDamage(damage);
+
+                if (effects.Find(effect => Effect.DoubleAttacker == effect.Effect && 1 == effect.Level) != null)
+                    enemy.TakeDamage(damage);
+
+                if (effects.Find(effect => Effect.DoubleAttacker == effect.Effect && 2 == effect.Level) != null)
+                    enemy.TakeDamage(damage);
+            }
+            else
+            {
+                var damage = enemy.GetDamage();
+
+                if (effects.Find(effect => Effect.Defender == effect.Effect && 1 == effect.Level) != null)
+                    damage = Mathf.CeilToInt(damage * 0.8f);
+
+                if (effects.Find(effect => Effect.Defender == effect.Effect && 2 == effect.Level) != null)
+                    damage = Mathf.CeilToInt(damage * 0.6f);
+
+                if (effects.Find(effect => Effect.StrongDefender == effect.Effect && 1 == effect.Level) != null)
+                    damage -= ally.GetDamage();
+
+                if (effects.Find(effect => Effect.StrongDefender == effect.Effect && 2 == effect.Level) != null)
+                    damage -= ally.GetDamage();
+
+                ally.TakeDamage(damage);
+
+                if (effects.Find(effect => Effect.CounterAttacker == effect.Effect && 1 == effect.Level) != null)
+                    enemy.TakeDamage(ally.GetDamage());
+
+                if (effects.Find(effect => Effect.CounterAttacker == effect.Effect && 2 == effect.Level) != null)
+                    enemy.TakeDamage(ally.GetDamage());
+            }
+
+            if (effects.Find(effect => Effect.Runner == effect.Effect && 1 == effect.Level) != null)
+                ally.GainMobility();
+
+            if (effects.Find(effect => Effect.Runner == effect.Effect && 2 == effect.Level) != null)
+            {
+                ally.GainMobility();
+                ally.GainMobility();
             }
         }
 

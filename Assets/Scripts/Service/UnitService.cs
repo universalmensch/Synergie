@@ -40,5 +40,10 @@ namespace Service
         {
             _repository.AddUnit(unit);
         }
+
+        public void Remove(Unit unit)
+        {
+            _repository.DeleteUnit(unit);
+        }
     }
 }
