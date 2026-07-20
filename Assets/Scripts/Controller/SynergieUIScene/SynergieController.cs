@@ -238,7 +238,7 @@ namespace Controller.SynergieUIScene
 
         private void ShowResourceInfo(SynergieResource resource, int selectedResourceIndex)
         {
-            resourceHeader.text = resource.Header;
+            resourceHeader.text = resource.Header + " (" + resource.SynergieType + ")";
             resourceValue.text = "value: " + resource.Value;
             resourceDescription.text = resource.Description;
             resourceLevel.text = "level: " + resource.Level;
@@ -280,7 +280,7 @@ namespace Controller.SynergieUIScene
 
         private void ShowTriggerInfo(SynergieTrigger trigger)
         {
-            triggerHeader.text = trigger.Header;
+            triggerHeader.text = trigger.Header + " (" + trigger.SynergieType + ")";
             triggerDescription.text = trigger.Description;
         }
 

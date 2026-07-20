@@ -142,12 +142,12 @@ namespace Controller.SelectionUIScene
 
             var trigger4 = new SynergieTrigger(SynergieType.Mobility,
                 "triggers the synergie when an ally buffs another ally",
-                "OnAttack");
+                "OnAlliedBuff");
             button4.SetSelection(trigger4);
 
             var trigger5 = new SynergieTrigger(SynergieType.Mobility,
                 "triggers the synergie when an ally buffs another ally",
-                "OnAttack");
+                "OnAlliedBuff");
             button5.SetSelection(trigger5);
         }
 

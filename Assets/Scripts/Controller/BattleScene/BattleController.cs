@@ -30,6 +30,7 @@ namespace Controller.BattleScene
         private UnitController _selectedUnit;
         private List<Synergie> _synergies;
         private ISynergieService _synergieService;
+        private ITaskService _taskService;
         private List<UnitController> _units;
         private IUnitService _unitService;
 
@@ -38,6 +39,7 @@ namespace Controller.BattleScene
             _unitService = ProjectInstaller.UnitService;
             _synergieService = ProjectInstaller.SynergieService;
             _sceneService = ProjectInstaller.SceneService;
+            _taskService = ProjectInstaller.TaskService;
 
             _synergies = _synergieService.GetSynergies();
 
@@ -73,6 +75,10 @@ namespace Controller.BattleScene
         private IEnumerator EndBattle()
         {
             yield return new WaitForSeconds(0.5f);
+
+            _taskService.AddTask(new Task(TaskType.AddUnit));
+            _taskService.AddTask(new Task(TaskType.AddSynergieTrigger));
+            _taskService.AddTask(new Task(TaskType.AddSynergieEffect));
 
             _sceneService.LoadScene(ISceneService.SceneName.Map);
             _sceneService.LoadScene(ISceneService.SceneName.MapUI, LoadSceneMode.Additive);
