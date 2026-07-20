@@ -6,6 +6,7 @@ using Entity;
 using Service;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -24,6 +25,8 @@ namespace Controller.BattleScene
         private List<Unit> _allies;
         private List<UnitController> _allyControllers;
         private List<Unit> _enemies;
+        private List<UnitController> _enemyControllers;
+        private ISceneService _sceneService;
         private UnitController _selectedUnit;
         private List<Synergie> _synergies;
         private ISynergieService _synergieService;
@@ -34,6 +37,7 @@ namespace Controller.BattleScene
         {
             _unitService = ProjectInstaller.UnitService;
             _synergieService = ProjectInstaller.SynergieService;
+            _sceneService = ProjectInstaller.SceneService;
 
             _synergies = _synergieService.GetSynergies();
 
@@ -52,6 +56,7 @@ namespace Controller.BattleScene
         {
             _units = new List<UnitController>();
             _allyControllers = new List<UnitController>();
+            _enemyControllers = new List<UnitController>();
 
             foreach (var unit in units)
             {
@@ -60,14 +65,25 @@ namespace Controller.BattleScene
                 _units.Add(unitObject.GetComponent<UnitController>());
                 if (unit.IsAlly)
                     _allyControllers.Add(unitObject.GetComponent<UnitController>());
+                else
+                    _enemyControllers.Add(unitObject.GetComponent<UnitController>());
             }
+        }
+
+        private IEnumerator EndBattle()
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            _sceneService.LoadScene(ISceneService.SceneName.Map);
+            _sceneService.LoadScene(ISceneService.SceneName.MapUI, LoadSceneMode.Additive);
         }
 
         public override void Clicked(Object obj)
         {
-            Debug.Log(_selectedUnit);
             if (!_selectedUnit)
                 return;
+
+            _selectedUnit.DeselectUnit();
 
             if (obj.GetType() != typeof(UnitController)) return;
 
@@ -93,6 +109,12 @@ namespace Controller.BattleScene
 
         private void HandleNextTurn()
         {
+            if (_enemyControllers.Count == 0 || _allyControllers.Count == 0)
+            {
+                StartCoroutine(EndBattle());
+                return;
+            }
+
             foreach (var unitController in _units) unitController.GainMobility();
 
             var sortedByMobility = _units
@@ -138,7 +160,7 @@ namespace Controller.BattleScene
             HandleNextTurn();
         }
 
-        private static void Fight(UnitController ally, UnitController enemy, bool allyIsAttacker,
+        private void Fight(UnitController ally, UnitController enemy, bool allyIsAttacker,
             List<SynergieEffect> effects)
         {
             if (allyIsAttacker)
@@ -157,7 +179,10 @@ namespace Controller.BattleScene
                     enemy.TakeDamage(damage);
 
                 if (effects.Find(effect => Effect.DoubleAttacker == effect.Effect && 2 == effect.Level) != null)
+                {
                     enemy.TakeDamage(damage);
+                    enemy.TakeDamage(damage);
+                }
             }
             else
             {
@@ -192,15 +217,33 @@ namespace Controller.BattleScene
                 ally.GainMobility();
                 ally.GainMobility();
             }
+
+            ally.UpdateUI();
+            enemy.UpdateUI();
+
+            if (ally.IsDead)
+            {
+                _units.Remove(ally);
+                _allyControllers.Remove(ally);
+                _selectedUnit = null;
+                Destroy(ally.gameObject);
+            }
+
+            if (enemy.IsDead)
+            {
+                _units.Remove(enemy);
+                _enemyControllers.Remove(enemy);
+                Destroy(enemy.gameObject);
+            }
         }
 
         private void ShowNextUnitTurns(List<UnitController> units)
         {
-            firstUnitText.text = units[0].GetIdentifier();
-            secondUnitText.text = units[1].GetIdentifier();
-            thirdUnitText.text = units[2].GetIdentifier();
-            forthUnitText.text = units[3].GetIdentifier();
-            fifthUnitText.text = units[4].GetIdentifier();
+            firstUnitText.text = units.Count > 0 ? units[0].GetIdentifier() : "";
+            secondUnitText.text = units.Count > 1 ? units[1].GetIdentifier() : "";
+            thirdUnitText.text = units.Count > 2 ? units[2].GetIdentifier() : "";
+            forthUnitText.text = units.Count > 3 ? units[3].GetIdentifier() : "";
+            fifthUnitText.text = units.Count > 4 ? units[4].GetIdentifier() : "";
         }
 
         private static void TriggerSynergie(Synergie synergie, UnitController ally)
@@ -220,6 +263,8 @@ namespace Controller.BattleScene
                         break;
                     default: throw new InvalidEnumArgumentException();
                 }
+
+            ally.UpdateUI();
         }
     }
 }

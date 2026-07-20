@@ -11,7 +11,6 @@ namespace Controller.MapScene
     {
         [SerializeField] private PlayerController player;
         private ISceneService _sceneService;
-        private ISynergieService _synergieService;
         private List<Task> _tasks;
         private ITaskService _taskService;
 
@@ -19,7 +18,6 @@ namespace Controller.MapScene
         {
             _taskService = ProjectInstaller.TaskService;
             _sceneService = ProjectInstaller.SceneService;
-            _synergieService = ProjectInstaller.SynergieService;
             _tasks = _taskService.GetTasks();
 
             if (!_tasks.Any()) return;
@@ -36,20 +34,6 @@ namespace Controller.MapScene
             if (obj.GetType() != typeof(TileController)) return;
 
             if (player.isSelected && !_tasks.Any()) player.MoveTo(((TileController)obj).tileCenter);
-        }
-
-        public void GameStart()
-        {
-            _synergieService = ProjectInstaller.SynergieService;
-            _taskService = ProjectInstaller.TaskService;
-
-            _synergieService.AddSynergie(new Synergie());
-            _taskService.AddTask(new Task(TaskType.AddUnit));
-            _taskService.AddTask(new Task(TaskType.AddUnit));
-            _taskService.AddTask(new Task(TaskType.AddUnit));
-            _taskService.AddTask(new Task(TaskType.AddSynergieTrigger));
-            _taskService.AddTask(new Task(TaskType.AddSynergieEffect));
-            _taskService.AddTask(new Task(TaskType.AddSynergieEffect));
         }
     }
 }

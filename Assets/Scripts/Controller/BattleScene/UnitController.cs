@@ -9,35 +9,39 @@ namespace Controller.BattleScene
         [SerializeField] private Material allyMaterial;
         [SerializeField] private Material enemyMaterial;
         [SerializeField] private Material selectedMaterial;
+        [SerializeField] private UnitUI ui;
 
         private int _currentAmor;
-        private int _currentDamage;
-        private int _currentHealth;
 
         private bool _isSelected;
+        private Renderer _renderer;
         private Unit _unit;
 
         private IUnitService _unitService;
 
         public bool IsAlly => _unit.IsAlly;
+
         public int Mobility { get; private set; }
+
+        public int Health { get; private set; }
+
+        public int Damage { get; private set; }
+
+        public bool IsDead { get; private set; }
 
         public SynergieType SynergieType => _unit.SynergieType;
 
         private void Start()
         {
             _unitService = ProjectInstaller.UnitService;
+            _renderer = GetComponent<Renderer>();
+
+            ui.UpdateUI(this);
         }
 
         private void Update()
         {
-            if (_currentHealth <= 0)
-            {
-                if (_unit.IsAlly) _unitService.Remove(_unit);
-                Destroy(gameObject);
-            }
-
-            if (_isSelected) GetComponent<Renderer>().material = selectedMaterial;
+            _renderer.material = _isSelected ? selectedMaterial : allyMaterial;
         }
 
         public void OnClick()
@@ -47,8 +51,8 @@ namespace Controller.BattleScene
         public void InitUnit(Unit unit)
         {
             _unit = unit;
-            _currentHealth = unit.Health;
-            _currentDamage = unit.Damage;
+            Health = unit.Health;
+            Damage = unit.Damage;
             _currentAmor = unit.Armor;
             Mobility = unit.Mobility;
 
@@ -80,17 +84,22 @@ namespace Controller.BattleScene
             if (damage - _currentAmor < 0)
                 return;
 
-            _currentHealth -= damage - _currentAmor;
+            Health -= damage - _currentAmor;
+
+            if (Health > 0) return;
+
+            if (_unit.IsAlly) _unitService.Remove(_unit);
+            IsDead = true;
         }
 
         public int GetDamage()
         {
-            return _currentDamage;
+            return Damage;
         }
 
         public void BuffHealth(int health)
         {
-            _currentHealth += health;
+            Health += health;
         }
 
         public void BuffMobility(int mobility)
@@ -100,7 +109,7 @@ namespace Controller.BattleScene
 
         public void BuffDamage(int damage)
         {
-            _currentDamage += damage;
+            Damage += damage;
         }
 
         public void SelectUnit()
@@ -111,6 +120,11 @@ namespace Controller.BattleScene
         public void DeselectUnit()
         {
             _isSelected = false;
+        }
+
+        public void UpdateUI()
+        {
+            ui.UpdateUI(this);
         }
     }
 }

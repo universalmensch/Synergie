@@ -97,22 +97,28 @@ namespace Controller.SelectionUIScene
 
         private void StartUnitSelection()
         {
-            var ally0 = new Unit(new Vector3(-4, 1, -4), true, SynergieType.Attacker, 30, 8, 5, 8, "Friedrich");
+            var ally0 = new Unit(new Vector3(-8 + Random.Range(-2, 2), 1, -2 + Random.Range(-2, 2)), true,
+                SynergieType.Attacker, 30, 12, 3, 8, "Friedrich");
             button0.SetSelection(ally0);
 
-            var ally1 = new Unit(new Vector3(-2, 1, -3), true, SynergieType.Defender, 50, 3, 10, 5, "Bert");
+            var ally1 = new Unit(new Vector3(-4 + Random.Range(-2, 2), 1, -3 + Random.Range(-2, 2)), true,
+                SynergieType.Defender, 50, 14, 3, 5, "Bert");
             button1.SetSelection(ally1);
 
-            var ally2 = new Unit(new Vector3(3, 1, -2), true, SynergieType.Mobility, 30, 3, 10, 10, "Bart");
+            var ally2 = new Unit(new Vector3(6 + Random.Range(-2, 2), 1, -1 + Random.Range(-2, 2)), true,
+                SynergieType.Mobility, 30, 10, 4, 10, "Bart");
             button2.SetSelection(ally2);
 
-            var ally3 = new Unit(new Vector3(0, 1, -3), true, SynergieType.Defender, 60, 5, 5, 5, "Karl");
+            var ally3 = new Unit(new Vector3(0 + Random.Range(-2, 2), 1, -2 + Random.Range(-2, 2)), true,
+                SynergieType.Defender, 60, 10, 3, 5, "Karl");
             button3.SetSelection(ally3);
 
-            var ally4 = new Unit(new Vector3(-4, 1, -4), true, SynergieType.Attacker, 40, 8, 5, 8, "Leon");
+            var ally4 = new Unit(new Vector3(-5 + Random.Range(-2, 2), 1, -3 + Random.Range(-2, 2)), true,
+                SynergieType.Attacker, 40, 11, 4, 8, "Leon");
             button4.SetSelection(ally4);
 
-            var ally5 = new Unit(new Vector3(0, 1, -3), true, SynergieType.Mobility, 30, 5, 5, 10, "Lukas");
+            var ally5 = new Unit(new Vector3(2 + Random.Range(-2, 2), 1, -1 + Random.Range(-2, 2)), true,
+                SynergieType.Mobility, 30, 12, 5, 10, "Lukas");
             button5.SetSelection(ally5);
         }
 
